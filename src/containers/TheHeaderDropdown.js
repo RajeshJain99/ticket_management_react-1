@@ -70,11 +70,9 @@ const TheHeaderDropdown = () => {
         >
           <strong>Settings</strong>
         </CDropdownItem>
-        <Link to='/companyProfile/1/'>
           <CDropdownItem>
-          <CIcon name="cil-user" className="mfe-2" />Profile
-        </CDropdownItem>
-        </Link>
+            <Link to='/companyProfile/1/'><CIcon name="cil-user" className="mfe-2" />Profile</Link>
+          </CDropdownItem>
         
         <CDropdownItem>
           <CIcon name="cil-settings" className="mfe-2" />
