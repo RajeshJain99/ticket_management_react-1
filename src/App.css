@@ -1,0 +1,26 @@
+.action-td {
+  text-align: center;
+}
+
+.action-td i {
+  margin: 0 12px;
+  cursor: pointer;
+}
+
+.add-btn-div {
+  float: right;
+  margin-top: -52px;
+}
+
+.data-table-div {
+  margin-top: 50px;
+}
+
+.big-btn-div {
+  margin-left: 2px;
+}
+
+.big-btn-div button {
+  width: 98.5%;
+}
+/*# sourceMappingURL=App.css.map */
