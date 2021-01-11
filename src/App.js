@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import './scss/style.scss';
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 const loading = (
   <div className="pt-3 text-center">

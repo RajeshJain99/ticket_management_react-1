@@ -1,16 +1,17 @@
-
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import { url } from 'src/helpers/Helpers';
-import { fetchContext } from '../../context/FetchContext'
+import { ToastContainer, toast } from 'react-toastify'
 import { userContext } from '../../context/UserContext'
+import { fetchContext } from '../../context/FetchContext'
 import { useHistory } from 'react-router-dom'
 import validator from 'validator'
-import { toast, ToastContainer } from 'react-toastify';
 
-
-export default function CreateCompany() {
+export default function EditCompany() {
     const history = useHistory();
+    const { id } = useParams();
     const { user } = React.useContext(userContext);
+    const [companyData, setCompanyData] = React.useState('');
     const [companyName, setCompanyName] = React.useState('');
     const [mobile, setMobile] = React.useState('');
     const [email, setEmail] = React.useState('');
@@ -23,6 +24,7 @@ export default function CreateCompany() {
 
 
     const { allCountries, getStates, getCities } = React.useContext(fetchContext)
+
 
     const setStatefunc = value => {
         setStateId(value)
@@ -49,8 +51,9 @@ export default function CreateCompany() {
                 formData.append('state_id', stateId)
                 formData.append('city_id', cityId)
                 formData.append('address', address)
+                formData.append('company_id', id)
 
-                const response = await fetch(url + 'create/company', {
+                const response = await fetch(url + 'update/company', {
                     method: 'POST',
                     headers: {
                         'Authorization': user.token,
@@ -59,6 +62,7 @@ export default function CreateCompany() {
                 })
 
                 if (response.ok == true) {
+                    const data = await response.json()
                     return history.push('/companyList/')
 
                 }
@@ -70,7 +74,37 @@ export default function CreateCompany() {
 
     }
 
+    React.useEffect(() => {
+        async function fetchCompanyData() {
+            const response = await fetch(url + 'edit/company/' + id, {
+                headers: {
+                    'Authorization': user.token
+                }
+            });
 
+            if (response.ok == true) {
+                const data = await response.json()
+
+                if (data.status == 201) {
+                    let companyData = data.company_data;
+                    setCompanyData(companyData);
+                    setCompanyName(companyData.name);
+                    setEmail(companyData.email);
+                    setMobile(companyData.mobile);
+                    setCountryId(companyData.country_id);
+                    setcountryfunc(companyData.country_id);
+                    setStateId(companyData.state_id);
+                    setStatefunc(companyData.state_id);
+                    setCityId(companyData.city_id);
+                    setAddress(companyData.address);
+                } else if (data.status == 401) {
+                    toast.error('Unable to fetch the data please reload the page or try again later')
+                }
+            }
+        }
+
+        fetchCompanyData()
+    }, [id])
     return (
         <section>
             <ToastContainer />
@@ -99,7 +133,7 @@ export default function CreateCompany() {
                     <div className="row">
                         <div className="col-md-4">
                             <label htmlFor="">Country</label>
-                            <select className='form-control' value={countryId} onChange={e => setcountryfunc(e.target.value)} required >
+                            <select required className='form-control' value={countryId} onChange={e => setcountryfunc(e.target.value)} >
                                 <option>Select Country</option>
                                 {allCountries?.map(item => (
                                     <option value={item.id}>{item.name}</option>

@@ -23,4 +23,8 @@
 .big-btn-div button {
   width: 98.5%;
 }
+
+.delete-id {
+  display: none;
+}
 /*# sourceMappingURL=App.css.map */
