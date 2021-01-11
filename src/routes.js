@@ -41,6 +41,7 @@ const User = React.lazy(() => import('./views/users/User'));
 // manual routes
 const CompanyList = React.lazy(() => import('./screens/Company/CompanyList'))
 const CreateCompany = React.lazy(() => import('./screens/Company/CreateCompany'))
+const ProfileCompany = React.lazy(()=> import('./screens/Profiles/Profile'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -86,6 +87,7 @@ const routes = [
   //Manual paths
   { path: '/companyList', exact: true, name: 'company list', component: CompanyList },
   { path: '/create/company', exact: true, name: 'create company', component: CreateCompany },
+  {path : '/companyProfile/:id',exact : true,name : 'company profile',component : ProfileCompany},
 ];
 
 export default routes;
