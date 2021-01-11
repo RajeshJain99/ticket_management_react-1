@@ -9,6 +9,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { userContext } from '../context/UserContext'
+import { Link } from 'react-router-dom'
 
 const TheHeaderDropdown = () => {
   const { user, setUser } = React.useContext(userContext)
@@ -69,9 +70,10 @@ const TheHeaderDropdown = () => {
         >
           <strong>Settings</strong>
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-user" className="mfe-2" />Profile
-        </CDropdownItem>
+          <CDropdownItem>
+            <Link to='/companyProfile/1/'><CIcon name="cil-user" className="mfe-2" />Profile</Link>
+          </CDropdownItem>
+        
         <CDropdownItem>
           <CIcon name="cil-settings" className="mfe-2" />
           Settings
