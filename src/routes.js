@@ -39,10 +39,15 @@ const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 
 // manual routes
+
 const CompanyList = React.lazy(() => import('./screens/Company/CompanyList'));
 const CreateCompany = React.lazy(() => import('./screens/Company/CreateCompany'));
 const EditCompany = React.lazy(() => import('./screens/Company/EditCompany'));
-const ProfileCompany = React.lazy(() => import('./screens/Profiles/Profile'))
+const ProfileCompany = React.lazy(() => import('./screens/Profiles/Profile'));
+const RoleList = React.lazy(() => import('./screens/Roles/RoleList'));
+const CreateRole = React.lazy(() => import('./screens/Roles/CreateRole'));
+const EditRole = React.lazy(() => import('./screens/Roles/EditRole'));
+const SMPT = React.lazy(() => import('./screens/Smtp'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -91,6 +96,12 @@ const routes = [
   { path: '/edit/company/:id', exact: true, name: 'Edit Company', component: EditCompany },
   { path: '/companyProfile/:id', exact: true, name: 'company profile', component: ProfileCompany },
   { path: '/userProfile/:id', exact: true, name: 'company profile', component: ProfileCompany },
+  { path: '/roleList', exact: true, name: 'role list', component: RoleList },
+  { path: '/create/role', exact: true, name: 'create Roles', component: CreateRole },
+  { path: '/edit/role/:id', exact: true, name: 'Edit Roles', component: EditRole },
+  { path: '/smpt', exact: true, name: 'SMPT', component: SMPT }
+
+
 ];
 
 export default routes;

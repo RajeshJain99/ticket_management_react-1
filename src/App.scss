@@ -1,28 +1,55 @@
-.action-td{
-    text-align: center;
-    i {
-        margin: 0 12px;
-        cursor: pointer;
-    }
+.action-td {
+  text-align: center;
+  i {
+    margin: 0 12px;
+    cursor: pointer;
+  }
 }
 
-.add-btn-div{
-    float: right;
-    margin-top: -52px;
+.add-btn-div {
+  float: right;
+  margin-top: -52px;
 }
 
-.data-table-div{
-    margin-top: 50px;
+.data-table-div {
+  margin-top: 50px;
 }
 
-.big-btn-div{
-    margin-left: 2px;
+.big-btn-div {
+  margin-left: 2px;
 
-    button {
-        width : 98.5%;
-    }
+  button {
+    width: 98.5%;
+  }
 }
 
-.delete-id{
-    display: none;
+.delete-id {
+  display: none;
+}
+
+.input-error {
+  color: #ff0000;
+  text-align: left;
+  width: 100%;
+  margin-top: -11px;
+  margin-left: 5px;
+}
+
+#preview_image {
+  width: 150px;
+  height: 150px;
+  margin: 10px 0;
+  border: 1px solid #f2f2f2;
+}
+
+#DisplayImage {
+  // width: 30%;
+  width: 100%;
+  height: auto;
+}
+.td_image {
+  width: 25%;
+}
+#MailId {
+  margin-left: 350px;
 }

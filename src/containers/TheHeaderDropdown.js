@@ -71,12 +71,11 @@ const TheHeaderDropdown = () => {
           <strong>Settings</strong>
         </CDropdownItem>
         <CDropdownItem>
-          <Link to={`/userProfile/${user?.userData?.id}/`}><CIcon name="cil-user" className="mfe-2" />Profile</Link>
+          <Link to={`/userProfile/${user.userData.id}/`}><CIcon name="cil-user" className="mfe-2" />Profile</Link>
         </CDropdownItem>
 
         <CDropdownItem>
-          <CIcon name="cil-settings" className="mfe-2" />
-          Settings
+          <Link to={`/smpt/`}><CIcon name="cil-settings" className="mfe-2" />SMPT</Link>
         </CDropdownItem>
         {/* <CDropdownItem>
           <CIcon name="cil-credit-card" className="mfe-2" />
