@@ -3,19 +3,19 @@ import { url } from 'src/helpers/Helpers';
 import { CBadge, CDataTable } from '@coreui/react'
 import { toast, ToastContainer } from 'react-toastify'
 import { Link } from 'react-router-dom';
-import CustomModal from '../../components/CustomModal'
 import { userContext } from 'src/context/UserContext';
+import CustomModal from '../../components/CustomModal'
 
-export default function CompanyList() {
+export default function RoleList() {
     const { user } = React.useContext(userContext);
-    const fields = ['#', 'name', 'email', 'Mobile No', 'status', 'actions']
-    const [allCompanies, setAllCompanies] = React.useState([]);
-    const [modal, setModal] = React.useState(false)
+    const fields = ['#', 'name', 'Icon','actions']
+    const [allRoles, setAllRoles] = React.useState([]);
+    const [modal, setModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState('')
+    
     React.useEffect(() => {
-        async function getCompanies() {
-            const response = await fetch(url + 'getCompanies/'
-            ,{
+        async function getRoles() {
+            const response = await fetch(url + 'roles',{
                 headers : {
                     'Authorization' : user.token
                 }
@@ -24,25 +24,25 @@ export default function CompanyList() {
                 const data = await response.json();
 
                 if (data.status == 200) {
-                    setAllCompanies(data.companies)
-                } else {
-                    toast.error(data.message);
+                    setAllRoles(data.role_list)
+                }
+                 else {
+                     toast.error(data.message);
                 }
             }
         }
-        getCompanies()
+        getRoles()
     }, [])
 
-    const deleteCompany = (id) => {
+    const deleteRole = (id) => {
         setModal(true);
         setDeleteId(id);
     }
 
-
     const deleteEntry = () => {
         console.log('ali');
-        async function deleteCompany() {
-            const response = await fetch(url + 'delete/company/' + deleteId, {
+        async function DeleteRole() {
+            const response = await fetch(url + 'delete/role/' + deleteId, {
                 headers: {
                     'Authorization': user.token
                 }
@@ -52,33 +52,25 @@ export default function CompanyList() {
                 const data = await response.json()
 
                 if (data.status == 200) {
-                    setAllCompanies(data.companies)
+                    setAllRoles(data.role_list)
+                    console.log(data.role_list)
                     setModal(false);
                     toast.success('Information deleted successfully')
                 }
             }
         }
-        deleteCompany();
+        DeleteRole();
     }
-
-    const getBadge = (status) => {
-        switch (status) {
-            case 'Active': return 'success'
-            case 'Inactive': return 'secondary'
-            default: return 'primary'
-        }
-    }
-
-    return (
+     return (
         <div>
             <ToastContainer />
             <div className='add-btn-div'>
-                <Link to='/create/company/' className='btn btn-primary'><i class="fa fa-plus mx-1" aria-hidden="true"></i> Add new company</Link>
+                <Link to='/create/role/' className='btn btn-primary'><i class="fa fa-plus mx-1" aria-hidden="true"></i> Add new Role</Link>
             </div>
             <CustomModal modal={modal} setModal={setModal} deleteEntry={deleteEntry} />
             <div className='data-table-div'>
                 <CDataTable
-                    items={allCompanies}
+                    items={allRoles}
                     fields={fields}
                     itemsPerPage={5}
                     pagination
@@ -88,18 +80,16 @@ export default function CompanyList() {
                     hover
                     sorter
                     scopedSlots={{
-                        'status': item => (
-                            <td>
-                                <CBadge color={getBadge(item.status)}>
-                                    {item.status}
-                                </CBadge>
-                            </td>
-                        ),
-                        'actions': (item, index) =>
+                      'actions': (item, index) =>
                         (<td className='action-td'>
-                            <Link to={`/edit/company/${item.id}`}><i class="fa fa-pencil" aria-hidden="true"></i></Link>
-                            <i onClick={() => deleteCompany(item.id)} class="fa fa-trash-o" aria-hidden="true"></i>
+                            <Link to={`/edit/role/${item.id}`}><i class="fa fa-pencil" aria-hidden="true"></i></Link>
+                            <i onClick={() => deleteRole(item.id)} class="fa fa-trash-o" aria-hidden="true"></i>
                         </td>
+                        ),
+                        'Icon' : (item) => (
+                            <td className="td_image">
+                                <img id="DisplayImage" src={`${url}${item.icon}`} alt=""/>
+                            </td>
                         )
                     }}
                 />
