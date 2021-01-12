@@ -1,4 +1,4 @@
-import  React,{useContext} from 'react'
+import React, { useContext } from 'react'
 import {
   CBadge,
   CDropdown,
@@ -70,10 +70,10 @@ const TheHeaderDropdown = () => {
         >
           <strong>Settings</strong>
         </CDropdownItem>
-          <CDropdownItem>
-            <Link to={`/userProfile/${user.userData.id}/`}><CIcon name="cil-user" className="mfe-2" />Profile</Link>
-          </CDropdownItem>
-        
+        <CDropdownItem>
+          <Link to={`/userProfile/${user?.userData?.id}/`}><CIcon name="cil-user" className="mfe-2" />Profile</Link>
+        </CDropdownItem>
+
         <CDropdownItem>
           <CIcon name="cil-settings" className="mfe-2" />
           Settings
