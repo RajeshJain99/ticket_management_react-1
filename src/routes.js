@@ -48,7 +48,9 @@ const RoleList = React.lazy(() => import('./screens/Roles/RoleList'));
 const CreateRole = React.lazy(() => import('./screens/Roles/CreateRole'));
 const EditRole = React.lazy(() => import('./screens/Roles/EditRole'));
 const SMPT = React.lazy(() => import('./screens/Smtp'));
-const UserList = React.lazy(()=>import('./screens/Users/UserList'))
+const UserList = React.lazy(()=>import('./screens/Users/UserList'));
+const CreateUser = React.lazy(()=>import('./screens/Users/CreateUser'));
+const EditUser = React.lazy(()=>import('./screens/Users/EditUser'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -101,8 +103,9 @@ const routes = [
   { path: '/create/role', exact: true, name: 'create Roles', component: CreateRole },
   { path: '/edit/role/:id', exact: true, name: 'Edit Roles', component: EditRole },
   { path: '/smpt', exact: true, name: 'SMPT', component: SMPT },
-  {path: '/userList' , exact : true , name :'User List', component :UserList}
-
+  {path: '/userList' , exact : true , name :'User List', component :UserList},
+  {path :'/create/user', excat : true, name :'Create User' ,component :CreateUser},
+   {path :'/edit/user', excat :true, name:'Edit User', component:EditUser }
 
 ];
 

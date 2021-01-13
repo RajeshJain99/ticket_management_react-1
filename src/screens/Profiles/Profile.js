@@ -4,6 +4,8 @@ import validator from 'validator';
 import { toast, ToastContainer } from 'react-toastify';
 import { url } from 'src/helpers/Helpers';
 
+
+
 export default function Profile() {
     const [Name, setName] = React.useState('');
     const [Email, setEmail] = React.useState('');

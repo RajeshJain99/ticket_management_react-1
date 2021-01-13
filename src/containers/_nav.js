@@ -24,6 +24,12 @@ const _nav = [
     to: '/roleList',
     icon: 'cil-puzzle',
   },
+  {
+   _tag: 'CSidebarNavItem',
+    name: 'Users',
+    to: '/userList',
+    icon: 'cil-puzzle',
+  }
   
 ]
 

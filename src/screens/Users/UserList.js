@@ -8,7 +8,7 @@ import CustomModal from '../../components/CustomModal'
 
 export default function UserList() {
     const { user } = React.useContext(userContext);
-    const fields = ['#','companyName','role', 'name', 'email',]
+    const fields = ['#','companyName', 'name', 'email','role','status','actions']
     const [allUsers, setallUsers] = React.useState([]);
     const [modal, setModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState('')
@@ -40,7 +40,7 @@ export default function UserList() {
     }
 
     const deleteEntry = () => {
-        console.log('ali');
+        
         async function DeleteUsers() {
             const response = await fetch(url + '' + deleteId, {
                 headers: {
@@ -64,7 +64,7 @@ export default function UserList() {
         <div>
             <ToastContainer />
             <div className='add-btn-div'>
-                <Link to='/create/role/' className='btn btn-primary'><i class="fa fa-plus mx-1" aria-hidden="true"></i> Add new Role</Link>
+                <Link to='/create/user/' className='btn btn-primary'><i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New User</Link>
             </div>
             <CustomModal modal={modal} setModal={setModal} deleteEntry={deleteEntry} />
             <div className='data-table-div'>
