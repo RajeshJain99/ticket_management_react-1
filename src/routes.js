@@ -47,7 +47,8 @@ const ProfileCompany = React.lazy(() => import('./screens/Profiles/Profile'));
 const RoleList = React.lazy(() => import('./screens/Roles/RoleList'));
 const CreateRole = React.lazy(() => import('./screens/Roles/CreateRole'));
 const EditRole = React.lazy(() => import('./screens/Roles/EditRole'));
-const SMPT = React.lazy(() => import('./screens/Smtp'))
+const SMPT = React.lazy(() => import('./screens/Smtp'));
+const UserList = React.lazy(()=>import('./screens/Users/UserList'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -99,7 +100,8 @@ const routes = [
   { path: '/roleList', exact: true, name: 'role list', component: RoleList },
   { path: '/create/role', exact: true, name: 'create Roles', component: CreateRole },
   { path: '/edit/role/:id', exact: true, name: 'Edit Roles', component: EditRole },
-  { path: '/smpt', exact: true, name: 'SMPT', component: SMPT }
+  { path: '/smpt', exact: true, name: 'SMPT', component: SMPT },
+  {path: '/userList' , exact : true , name :'User List', component :UserList}
 
 
 ];

@@ -1,2 +1,2 @@
- export const url = 'http://localhost:3002/';
-// export const url = 'http://9676b2f68820.ngrok.io/';
+//  export const url = 'http://localhost:3002/';
+export const url = 'http://69f1cce6b48b.ngrok.io/';
