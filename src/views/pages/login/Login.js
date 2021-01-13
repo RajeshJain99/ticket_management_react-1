@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 
 import {
@@ -41,15 +41,23 @@ const Login = () => {
 
         if (response.ok == true) {
           const data = await response.json()
-          console.log(data);
-
+         
           if (data.status == 200) {
             setUser({
               token: data.token,
               userData: data.userData
             })
+            console.log(data.userData.is_first_login);
+            if(data.userData.is_first_login==0)
+            {
+               return window.location = window.location.origin + '/#/register';
+            }
+            else
+            {
             return window.location = window.location.origin + '/';
-          } else {
+            }
+            } 
+            else {
             toast.error(data.message);
           }
         }
@@ -62,7 +70,7 @@ const Login = () => {
     login();
   }
 
-  return (
+   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <ToastContainer />
       <CContainer>

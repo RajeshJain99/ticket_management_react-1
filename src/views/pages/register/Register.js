@@ -14,39 +14,71 @@ import {
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { toast, ToastContainer } from 'react-toastify';
+import { url } from 'src/helpers/Helpers';
+import { userContext } from '../../../context/UserContext'
+
 
 const Register = () => {
+  const [password, setPassword] = React.useState('');
+  const [ConfirmPassword, setConfirmPassword] = React.useState('');
+  const { user } = React.useContext(userContext);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (password != null && ConfirmPassword != null) {
+      if (password == ConfirmPassword) {
+        async function submitPassword() {
+          const formData = new FormData();
+          formData.append('password', password)
+
+          const response = await fetch(url + 'updatePassword/', {
+            method: 'POST',
+            headers: {
+              'Authorization': user.token,
+            },
+            body: formData
+          })
+
+          if (response.ok == true) {
+            const data = await response.json()
+            if (data.status == 200) {
+              return window.location = window.location.origin + '/';
+            } else {
+              toast.error(data.message)
+            }
+          }
+
+        }
+        submitPassword()
+
+      }
+      else {
+        toast.error("Password Does Not match")
+      }
+    }
+  }
+
+
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
+      <ToastContainer />
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md="9" lg="7" xl="6">
             <CCard className="mx-4">
               <CCardBody className="p-4">
-                <CForm>
-                  <h1>Register</h1>
-                  <p className="text-muted">Create your account</p>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>
-                        <CIcon name="cil-user" />
-                      </CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput type="text" placeholder="Username" autoComplete="username" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>@</CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput type="text" placeholder="Email" autoComplete="email" />
-                  </CInputGroup>
+                <CForm onSubmit={e => handleSubmit(e)}>
+                  <h1>Reset Password</h1>
+                  <p className="text-muted">Reset your password</p>
                   <CInputGroup className="mb-3">
                     <CInputGroupPrepend>
                       <CInputGroupText>
                         <CIcon name="cil-lock-locked" />
                       </CInputGroupText>
                     </CInputGroupPrepend>
-                    <CInput type="password" placeholder="Password" autoComplete="new-password" />
+                    <CInput type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" autoComplete="new-password" type="password" />
                   </CInputGroup>
                   <CInputGroup className="mb-4">
                     <CInputGroupPrepend>
@@ -54,20 +86,12 @@ const Register = () => {
                         <CIcon name="cil-lock-locked" />
                       </CInputGroupText>
                     </CInputGroupPrepend>
-                    <CInput type="password" placeholder="Repeat password" autoComplete="new-password" />
+                    <CInput type="password" required value={ConfirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Reset password" autoComplete="new-password" />
                   </CInputGroup>
-                  <CButton color="success" block>Create Account</CButton>
+                  <CButton type='submit' color="success" block>Reset Password</CButton>
                 </CForm>
               </CCardBody>
               <CCardFooter className="p-4">
-                <CRow>
-                  <CCol xs="12" sm="6">
-                    <CButton className="btn-facebook mb-1" block><span>facebook</span></CButton>
-                  </CCol>
-                  <CCol xs="12" sm="6">
-                    <CButton className="btn-twitter mb-1" block><span>twitter</span></CButton>
-                  </CCol>
-                </CRow>
               </CCardFooter>
             </CCard>
           </CCol>
