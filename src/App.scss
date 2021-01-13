@@ -53,3 +53,19 @@
 #MailId {
   margin-left: 350px;
 }
+
+.checkbox_div{
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0px;
+
+  h3 {
+    color: black;
+  }
+
+  .input-div {
+    input {
+      margin-right: 10px;
+    }
+  }
+}

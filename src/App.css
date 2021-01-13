@@ -1,6 +1,7 @@
 .action-td {
   text-align: center;
 }
+
 .action-td i {
   margin: 0 12px;
   cursor: pointer;
@@ -18,6 +19,7 @@
 .big-btn-div {
   margin-left: 2px;
 }
+
 .big-btn-div button {
   width: 98.5%;
 }
@@ -52,5 +54,23 @@
 
 #MailId {
   margin-left: 350px;
+}
+
+.checkbox_div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 20px 0px;
+}
+
+.checkbox_div h3 {
+  color: black;
+}
+
+.checkbox_div .input-div input {
+  margin-right: 10px;
 }
 /*# sourceMappingURL=App.css.map */

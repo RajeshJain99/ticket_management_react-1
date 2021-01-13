@@ -8,16 +8,16 @@ import CustomModal from '../../components/CustomModal'
 
 export default function RoleList() {
     const { user } = React.useContext(userContext);
-    const fields = ['#', 'name', 'Icon','actions']
+    const fields = ['#', 'name', 'Icon', 'actions']
     const [allRoles, setAllRoles] = React.useState([]);
     const [modal, setModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState('')
-    
+
     React.useEffect(() => {
         async function getRoles() {
-            const response = await fetch(url + 'roles',{
-                headers : {
-                    'Authorization' : user.token
+            const response = await fetch(url + 'roles/', {
+                headers: {
+                    'Authorization': user.token
                 }
             })
             if (response.ok === true) {
@@ -26,8 +26,8 @@ export default function RoleList() {
                 if (data.status == 200) {
                     setAllRoles(data.role_list)
                 }
-                 else {
-                     toast.error(data.message);
+                else {
+                    toast.error(data.message);
                 }
             }
         }
@@ -61,7 +61,7 @@ export default function RoleList() {
         }
         DeleteRole();
     }
-     return (
+    return (
         <div>
             <ToastContainer />
             <div className='add-btn-div'>
@@ -80,15 +80,16 @@ export default function RoleList() {
                     hover
                     sorter
                     scopedSlots={{
-                      'actions': (item, index) =>
+                        'actions': (item, index) =>
                         (<td className='action-td'>
                             <Link to={`/edit/role/${item.id}`}><i class="fa fa-pencil" aria-hidden="true"></i></Link>
                             <i onClick={() => deleteRole(item.id)} class="fa fa-trash-o" aria-hidden="true"></i>
+                            <Link to={`/permissionPage/${item.id}`}><i class="fa fa-lock" aria-hidden="true"></i></Link>
                         </td>
                         ),
-                        'Icon' : (item) => (
+                        'Icon': (item) => (
                             <td className="td_image">
-                                <img id="DisplayImage" src={`${url}${item.icon}`} alt=""/>
+                                <img id="DisplayImage" src={`${url}${item.icon}`} alt="" />
                             </td>
                         )
                     }}
