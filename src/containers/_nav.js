@@ -25,12 +25,12 @@ const _nav = [
     icon: 'cil-puzzle',
   },
   {
-   _tag: 'CSidebarNavItem',
+    _tag: 'CSidebarNavItem',
     name: 'Users',
     to: '/userList',
     icon: 'cil-puzzle',
   }
-  
+
 ]
 
 export default _nav
