@@ -49,9 +49,10 @@ export default function Permission() {
 
             if (response.ok == true) {
                 const data = await response.json()
-
                 if (data.status == 200) {
                     toast.success(data.message);
+                } else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404'
                 } else {
                     toast.error(data.message);
                 }

@@ -5,21 +5,21 @@ import { userContext } from '../../context/UserContext'
 import { useHistory } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify';
 import { useParams } from 'react-router-dom'
+import { data } from 'jquery';
 
 export default function CreateUser() {
     const { id } = useParams();
     const history = useHistory();
     const { user } = React.useContext(userContext);
-    const [userName, setUserName] = React.useState('');
+   const[firstName,SetFirstName]= React.useState('');
+    const[lastName,setLastName]= React.useState('');
     const [email, setEmail] = React.useState('');
     const [mobileno, setMobileno] = React.useState('');
     const [role, setRole] = React.useState([]);
     const [company, setCompany] = React.useState([]);
-    const [department, setDepartment] = React.useState([]);
     const [branch, setBranch] = React.useState([]);
     const [roleid,setRoleId] =React.useState('');
     const [companyid,setCompanyId]= React.useState('');
-    const [departmentid,setDepartmentId]= React.useState('');
     const [branchid, setBranchId] = React.useState('');
 
    React.useEffect(() => {
@@ -42,11 +42,12 @@ export default function CreateUser() {
 
                       setRole(role);
                       setCompany(company);
-                      setDepartment(departmnet);
                       setBranch(branch);
 
+                } else if (data.status ==404){
+                    return window.location = window.location.origin + '/#/404'
                 } else {
-                    toast.error('Unable to fetch the data please reload the page or try again later')
+                    toast.error(data.message)
                 }
             }
         }
@@ -62,16 +63,17 @@ export default function CreateUser() {
 
                 if (data.status == 200) {
                     let userData = data.user_data;
-                      setUserName(userData.name);
-                       setEmail(userData.email);
+                      SetFirstName(userData.fname);
+                       setLastName(userData.lname);
                        setMobileno(userData.mobile);
                        setRoleId(userData.roleid);
                        setCompany(userData.companyid);
-                       setDepartment(userData.departmentid);
-                       setBranch(userData.branchid);
+                        setBranch(userData.branchid);
+                } else if (data.status==404){
+                    return window.location= window.location.origin + '/#/404';
                 }
                   else {
-                    toast.error('Unable to fetch the data please reload the page or try again later')
+                    toast.error(data.message)
                 }
             }
         }
@@ -84,12 +86,12 @@ export default function CreateUser() {
        
             async function sumbitUser() {
                 const formData = new FormData();
-                formData.append('name', userName)
+                formData.append('fname',firstName)
+                formData.append('lname',lastName)
                 formData.append('email', email)
                 formData.append('mobile', mobileno)
                 formData.append('roleid', roleid)
                 formData.append('comapnyid', companyid)
-                formData.append('departmentid', departmentid)
                 formData.append('branchid', branchid)
                 formData.append('user_id', id)
 
@@ -102,8 +104,11 @@ export default function CreateUser() {
                 })
 
                 if (response.ok == true) {
-                    return history.push('')
-
+                    return history.push('/userList/')
+                } else if (data.status==404) {
+                    return window.location = window.location.origin + '/#/404'
+                } else {
+                    toast.error(data.message)
                 }
             }
             sumbitUser()
@@ -116,76 +121,72 @@ export default function CreateUser() {
             <ToastContainer />
             <div className="container">
                 <form onSubmit={e => handleSubmit(e)}>
-                    <div className="row">
-                        <div className="col-md-4">
-                            <div className="form-group">
-                                <label htmlFor="">User Name</label>
-                                <input required value={userName} onChange={e => setUserName(e.target.value)} type="text" className="form-control" />
+                   <div className="row">
+                         <div className="col-md-4">
+                           <div className="form-group">
+                                <label htmlFor="">First Name</label>
+                                <input required value={firstName} onChange={e => SetFirstName(e.target.value)} type="text" className="form-control" />
                             </div>
                         </div>
+                         <div className="col-md-4">
+                           <div className="form-group">
+                                <label htmlFor="">Last Name</label>
+                                <input required value={lastName} onChange={e => setLastName(e.target.value)} type="text" className="form-control" />
+                            </div>
+                        </div>
+                        
+                        <div className="col-md-4">
+                            <div className="form-group">
+                                <label htmlFor="">Mobile No.</label>
+                                <input required value={mobileno} onChange={e => setMobileno(e.target.value)} type="text" className="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
                         <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Email</label>
                                 <input required value={email} onChange={e => setEmail(e.target.value)} type="text" className="form-control" />
                             </div>
                         </div>
+                      
                         <div className="col-md-4">
                             <div className="form-group">
-                                <label htmlFor="">Mobile No.</label>
-                                <input required value={mobileno} onChange={e=>setMobileno(e.target.value)} type="text" className="form-control" />
+                                <label htmlFor="">Select Company</label>
+                                <select className="form-control" required onChange={e => setCompanyId(e.target.companyid)} >
+                                    <option>Select Company</option>
+                                    {company?.map(item => (
+                                        <option value={item.id}>{item.company_name}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-4">
+                       <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Role</label>
-                               <select className='form-control' required  onChange={e => setRoleId(e.target.value)} >
+                                <select className='form-control' required onChange={e => setRoleId(e.target.value)} >
                                     <option>Select Role</option>
-                                     {role?.map(item => (
+                                    {role?.map(item => (
                                         <option value={item.id}>{item.role_name}</option>
                                     ))}
                                 </select>
-                          </div>
-                        </div>
-                        
-                        <div className="col-md-4">
-                            <div className="form-group">
-                            <label htmlFor="">Select Company</label>
-                            <select className="form-control" required onChange={e=>setCompanyId(e.target.companyid)} >
-                                <option>Select Company</option>
-                                 {company?.map(item=>(
-                                     <option value={item.id}>{item.company_name}</option>
-                                   ))}
-                            </select>
-                            </div>
-                      </div>
-                             <div className="col-md-4">
-                            <div className="form-group">
-                            <label htmlFor="">Select Department</label>
-                            <select className="form-control" required onChange={e=>setDepartmentId(e.target.departmentid)} >
-                                <option>Select Department</option>
-                                 {department?.map(item=>(
-                                     <option value={item.id}>{item.department_name}</option>
-                                   ))}
-                            </select>
                             </div>
                         </div>
                     </div>
                     <div className="row" >
                         <div className="col-md-4">
                             <div className="form-group">
-                            <label htmlFor="">Select Branch</label>
-                            <select className="form-control" required onChange={e=>setBranchId(e.target.branchid)} >
-                                <option>Select Branch</option>
-                                 {branch?.map(item=>(
-                                     <option value={item.id}>{item.branch_name}</option>
-                                   ))}
-                            </select>
+                                <label htmlFor="">Select Branch</label>
+                                <select className="form-control" required onChange={e => setBranchId(e.target.branchid)} >
+                                    <option>Select Branch</option>
+                                    {branch?.map(item => (
+                                        <option value={item.id}>{item.branch_name}</option>
+                                    ))}
+                                </select>
                             </div>
-                      </div>
-
-                    </div>
+                        </div>
+						 
+                     </div>
                     <div className="row mt-4 big-btn-div">
                         <button type='submit' className='btn btn-success'>Submit</button>
                     </div>

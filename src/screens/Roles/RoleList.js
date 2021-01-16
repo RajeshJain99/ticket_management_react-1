@@ -25,6 +25,8 @@ export default function RoleList() {
 
                 if (data.status == 200) {
                     setAllRoles(data.role_list)
+                } else if(data.status== 404){
+                return window.location = window.location.origin + '/#/404'
                 }
                 else {
                     toast.error(data.message);
@@ -40,8 +42,7 @@ export default function RoleList() {
     }
 
     const deleteEntry = () => {
-        console.log('ali');
-        async function DeleteRole() {
+       async function DeleteRole() {
             const response = await fetch(url + 'delete/role/' + deleteId, {
                 headers: {
                     'Authorization': user.token
@@ -53,10 +54,12 @@ export default function RoleList() {
 
                 if (data.status == 200) {
                     setAllRoles(data.role_list)
-                    console.log(data.role_list)
                     setModal(false);
                     toast.success('Information deleted successfully')
+                } else if (data.status ==404) {
+                    return window.location = window.location.origin + '/#/404';
                 }
+
             }
         }
         DeleteRole();

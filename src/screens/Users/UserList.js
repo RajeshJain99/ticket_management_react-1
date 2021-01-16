@@ -25,8 +25,9 @@ export default function UserList() {
 
                 if (data.status == 200) {
                     setallUsers()
-                }
-                 else {
+                } else if (data.status==404){
+                    return window.location = window.location.origin + '/#/404';
+                } else {
                      toast.error(data.message);
                 }
             }
@@ -53,8 +54,10 @@ export default function UserList() {
 
                 if (data.status == 200) {
                     setallUsers()
-                   setModal(false);
+                     setModal(false);
                     toast.success('Information deleted successfully')
+                } else if(data.status ==404){
+                    return window.location = window.location.origin + '/#/404'
                 }
             }
         }

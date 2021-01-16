@@ -26,35 +26,39 @@ export default function CreateRole() {
     }
     const handleSubmit = e => {
         e.preventDefault();
-        if(roleImage){
-        async function sumbitRole() {
-            const formData = new FormData();
-            formData.append('name', RoleName)
-            formData.append('description', RoleDescription)
-            formData.append('icon', roleImage)
-             
-            const response = await fetch(url + 'create/role', {
-                method: 'POST',
-                headers: {
-                    'Authorization': user.token,
-                },
-                body: formData
-            })
+        if (roleImage) {
+            async function sumbitRole() {
+                const formData = new FormData();
+                formData.append('name', RoleName)
+                formData.append('description', RoleDescription)
+                formData.append('icon', roleImage)
 
-            if (response.ok == true) {
-                return history.push('/roleList/')
+                const response = await fetch(url + 'create/role', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': user.token,
+                    },
+                    body: formData
+                })
 
+                if (response.ok == true) {
+                    const data = await response.json()
+                    if(data.status==200){
+                    return history.push('/roleList/')
+                    }
+                    else if(data.status==404){
+                     return  window.location= window.location.origin +'/#/404';
+                    } else{
+                      toast.error(data.message);
+                    }
+                }
             }
 
-
+            sumbitRole()
         }
-
-        sumbitRole()
-    }
-    else
-    {
-        toast.error("Please select image first")
-    }
+        else {
+            toast.error("Please select image first")
+        }
     }
     return (
         <section>
@@ -76,7 +80,7 @@ export default function CreateRole() {
                         </div>
                     </div>
                     <div className="row">
-                         <div className="col-md-4">
+                        <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Choose Icon</label>
                                 <input type="file" onChange={(e) => onImageChange(e)} className="filetype" id="group_image" />

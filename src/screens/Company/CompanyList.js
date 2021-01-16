@@ -12,6 +12,8 @@ export default function CompanyList() {
     const [allCompanies, setAllCompanies] = React.useState([]);
     const [modal, setModal] = React.useState(false)
     const [deleteId, setDeleteId] = React.useState('')
+   
+     console.log(user);
     React.useEffect(() => {
         async function getCompanies() {
             const response = await fetch(url + 'getCompanies/'
@@ -25,7 +27,11 @@ export default function CompanyList() {
 
                 if (data.status == 200) {
                     setAllCompanies(data.companies)
-                } else {
+                 }
+                else if(data.status == 404){
+                     return window.location = window.location.origin + '/#/404';
+                }
+                else {
                     toast.error(data.message);
                 }
             }
@@ -40,7 +46,6 @@ export default function CompanyList() {
 
 
     const deleteEntry = () => {
-        console.log('ali');
         async function deleteCompany() {
             const response = await fetch(url + 'delete/company/' + deleteId, {
                 headers: {
@@ -55,6 +60,9 @@ export default function CompanyList() {
                     setAllCompanies(data.companies)
                     setModal(false);
                     toast.success('Information deleted successfully')
+                }
+                else if(data.status==404){
+                    return window.location = window.location.origin +'/#/404';
                 }
             }
         }
