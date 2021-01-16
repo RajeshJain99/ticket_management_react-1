@@ -23,18 +23,7 @@ const Page404 = () => {
               <h4 className="pt-3">Oops! You{'\''}re lost.</h4>
               <p className="text-muted float-left">The page you are looking for was not found.</p>
             </div>
-            <CInputGroup className="input-prepend">
-              <CInputGroupPrepend>
-                <CInputGroupText>
-                  <CIcon name="cil-magnifying-glass" />
-                </CInputGroupText>
-              </CInputGroupPrepend>
-              <CInput size="16" type="text" placeholder="What are you looking for?" />
-              <CInputGroupAppend>
-                <CButton color="info">Search</CButton>
-              </CInputGroupAppend>
-            </CInputGroup>
-          </CCol>
+           </CCol>
         </CRow>
       </CContainer>
     </div>

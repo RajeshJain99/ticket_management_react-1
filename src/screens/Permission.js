@@ -25,7 +25,7 @@ export default function Permission() {
                     let item = permission[j];
                     second_list.push($(item).attr('data-type'))
                 }
-
+                
                 final_list[parentPermission[i].id] = second_list;
             }
         }
@@ -48,9 +48,10 @@ export default function Permission() {
 
             if (response.ok == true) {
                 const data = await response.json()
-
-                if (data.status == 200) {
+                  if (data.status == 200) {
                     toast.success(data.message);
+                } else if (data.status ==404) {
+                    return window.location= window.location.origin +'/#/404'
                 } else {
                     toast.error(data.message);
                 }
@@ -81,7 +82,6 @@ export default function Permission() {
     }, [id])
 
 
-    console.log('by');
     return (
         <section>
             <ToastContainer />

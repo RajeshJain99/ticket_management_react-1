@@ -17,9 +17,10 @@ import {
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
+import $ from 'jquery'
 import { userContext } from '../../../context/UserContext'
 import { url } from 'src/helpers/Helpers'
+
 
 const Login = () => {
   const { user, setUser } = React.useContext(userContext);
@@ -27,12 +28,14 @@ const Login = () => {
   const [password, setPassword] = React.useState('');
 
   const handleSubmit = (e) => {
+    
     e.preventDefault();
-    const formData = new FormData()
+   const formData = new FormData()
     formData.append('email', email);
     formData.append('password', password);
-
-    async function login() {
+    
+    $('#ButtonSumbit').attr('disabled',true)
+     async function login() {
       try {
         const response = await fetch(url + 'login/', {
           method: 'POST',
@@ -41,24 +44,23 @@ const Login = () => {
 
         if (response.ok == true) {
           const data = await response.json()
-         
+
           if (data.status == 200) {
             setUser({
               token: data.token,
               userData: data.userData
+             
             })
-            console.log(data.userData.is_first_login);
-            if(data.userData.is_first_login==0)
-            {
-               return window.location = window.location.origin + '/#/register';
+            if (data.userData.is_first_login == 0) {
+              return window.location = window.location.origin + '/#/register';
             }
-            else
-            {
-            return window.location = window.location.origin + '/';
-            }
-            } 
             else {
+              return window.location = window.location.origin + '/';
+            }
+          }
+          else {
             toast.error(data.message);
+             $('#ButtonSumbit').attr('disabled',false)
           }
         }
       } catch (err) {
@@ -70,7 +72,7 @@ const Login = () => {
     login();
   }
 
-   return (
+  return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <ToastContainer />
       <CContainer>
@@ -100,7 +102,7 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">
-                        <CButton type='submit' color="primary" className="px-4">Login</CButton>
+                        <CButton id="ButtonSumbit"  type='submit' color="primary" className="px-4">Login</CButton>
                       </CCol>
                       <CCol xs="6" className="text-right">
                         <CButton color="link" className="px-0">Forgot password?</CButton>
@@ -116,7 +118,7 @@ const Login = () => {
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
                       labore et dolore magna aliqua.</p>
                     <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>Register Now!</CButton>
+                      <CButton  color="primary" className="mt-3" active tabIndex={-1}>Register Now!</CButton>
                     </Link>
                   </div>
                 </CCardBody>

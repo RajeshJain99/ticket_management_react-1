@@ -15,9 +15,9 @@ export default function Profile() {
     const [ShowError, SetShowError] = React.useState(false);
     const { user } = useContext(userContext);
 
-
     useEffect(() => {
-        setName(user.userData.name);
+        let lname = user.userData.lname != null ? user.userData.lname : ''
+        setName(user.userData.fname + ' ' + lname);
         setEmail(user.userData.email);
         setMobileNo(user.userData.mobile);
     }, [])
@@ -34,31 +34,34 @@ export default function Profile() {
                         formData.append('name', Name)
                         formData.append('mobile', MobileNo)
                         formData.append('password', Password)
-                        formData.append('id',user.userData.id )
+                        formData.append('id', user.userData.id)
 
                         const response = await fetch(url + 'edit/user/', {
                             method: "POST",
                             headers: {
                                 "Authorization": user.token
                             },
-                            body: formData  
+                            body: formData
                         })
 
-                        if(response.ok==true){
-                            const data =await response.json()
-                            if(data.status == 200){
+                        if (response.ok == true) {
+                            const data = await response.json()
+                            if (data.status == 200) {
                                 toast.success("Information updated successfully")
-                                setTimeout(()=>{
+                                setTimeout(() => {
                                     return window.location.reload()
-                                },3000)
-                            }else if(data.status==500){
+                                }, 3000)
+                            } else if (data.status == 500) {
                                 toast.error(data.message)
+                            }
+                            else if (data.status == 404) {
+                                return window.location = window.location.origin + '/#/404';
                             }
 
                         }
                     }
                     SaveProfileData()
-                 }
+                }
                 else {
                     toast.error('Invalid Mobile Number')
                 }

@@ -56,6 +56,9 @@ export default function EditRole() {
                 if (data.status == 200) {
                     return history.push('/roleList/')
                 }
+                else if(data.status==404){
+                  return window.location= window.location.origin +'/#/404';
+                }
                 else {
                     toast.error(data.message);
                 }
@@ -85,8 +88,11 @@ export default function EditRole() {
                     setRoleImage(roleData?.icon)
                     setRoleIcon(`${url}${roleData?.icon}`) //---> only preview
                 }
+                else if(data.status==404){
+                return window.location= window.location.origin + '/#/404';
+                }
                 else {
-                    toast.error('Unable to fetch the data please reload the page or try again later')
+                    toast.error(data.message)
                 }
             }
         }

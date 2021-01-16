@@ -52,6 +52,9 @@ const PermissionPage = React.lazy(() => import('./screens/Permission'));
 const UserList = React.lazy(() => import('./screens/Users/UserList'));
 const CreateUser = React.lazy(() => import('./screens/Users/CreateUser'));
 const EditUser = React.lazy(() => import('./screens/Users/EditUser'));
+const BranchList= React.lazy(()=>import('./screens/Branch/BranchList'));
+const CreateBranch = React.lazy(()=>import('./screens/Branch/CreateBranch'));
+const EditBranch = React.lazy(()=>import('./screens/Branch/EditBranch'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -107,7 +110,11 @@ const routes = [
   { path: '/permissionPage/:id', exact: true, name: 'Permission', component: PermissionPage },
   { path: '/userList', exact: true, name: 'User List', component: UserList },
   { path: '/create/user', excat: true, name: 'Create User', component: CreateUser },
-  { path: '/edit/user', excat: true, name: 'Edit User', component: EditUser }
+  { path: '/edit/user', excat: true, name: 'Edit User', component: EditUser },
+  {path : '/branchList',excat:true,name: 'Branch List', component:BranchList },
+  {path:'/create/branch', excat:true, name: 'Create Branch', component:CreateBranch},
+  {path :'/edit/branch/:id', excat:true,name :'Edit Branch', component: EditBranch}
+  
 
 ];
 

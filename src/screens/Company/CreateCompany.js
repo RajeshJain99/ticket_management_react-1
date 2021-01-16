@@ -59,8 +59,16 @@ export default function CreateCompany() {
                 })
 
                 if (response.ok == true) {
-                    return history.push('/companyList/')
-
+                    const data = await response.json()
+                    if (data.status == 200) {
+                        return history.push('/companyList/')
+                    }
+                    else if (data.status == 404) {
+                        return window.location = window.location.origin + '/#/404';
+                    }
+                    else {
+                        toast.error(data.message);
+                    }
                 }
             }
             submitCompany()

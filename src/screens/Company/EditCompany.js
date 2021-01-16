@@ -63,8 +63,14 @@ export default function EditCompany() {
 
                 if (response.ok == true) {
                     const data = await response.json()
+                    if(data.status==200){
                     return history.push('/companyList/')
-
+                    }
+                     else if(data.status==404){
+                      return  window.location=window.location.origin +'/#/404';
+                    } else {
+                      toast.error(data.message);
+                  }  
                 }
             }
             submitCompany()
@@ -99,6 +105,9 @@ export default function EditCompany() {
                     setAddress(companyData.address);
                 } else if (data.status == 401) {
                     toast.error('Unable to fetch the data please reload the page or try again later')
+                }
+                 else if(data.status == 404){
+                     return window.location = window.location.origin + '/#/404';
                 }
             }
         }
