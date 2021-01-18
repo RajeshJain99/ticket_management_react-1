@@ -25,8 +25,8 @@ export default function RoleList() {
 
                 if (data.status == 200) {
                     setAllRoles(data.role_list)
-                } else if(data.status== 404){
-                return window.location = window.location.origin + '/#/404'
+                } else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404'
                 }
                 else {
                     toast.error(data.message);
@@ -42,7 +42,7 @@ export default function RoleList() {
     }
 
     const deleteEntry = () => {
-       async function DeleteRole() {
+        async function DeleteRole() {
             const response = await fetch(url + 'delete/role/' + deleteId, {
                 headers: {
                     'Authorization': user.token
@@ -56,7 +56,7 @@ export default function RoleList() {
                     setAllRoles(data.role_list)
                     setModal(false);
                     toast.success('Information deleted successfully')
-                } else if (data.status ==404) {
+                } else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404';
                 }
 
@@ -85,9 +85,11 @@ export default function RoleList() {
                     scopedSlots={{
                         'actions': (item, index) =>
                         (<td className='action-td'>
-                            <Link to={`/edit/role/${item.id}`}><i class="fa fa-pencil" aria-hidden="true"></i></Link>
-                            <i onClick={() => deleteRole(item.id)} class="fa fa-trash-o" aria-hidden="true"></i>
-                            <Link to={`/permissionPage/${item.id}`}><i class="fa fa-lock" aria-hidden="true"></i></Link>
+                            {user?.userData.Roles?.Edit == 1 && <Link to={`/edit/role/${item.id}`}><i class="fa fa-pencil" aria-hidden="true"></i></Link>}
+
+                            {user?.userData.Roles?.Delete == 1 && <i onClick={() => deleteRole(item.id)} class="fa fa-trash-o" aria-hidden="true"></i>}
+
+                            {user?.userData.Permission?.View == 1 && <Link to={`/permissionPage/${item.id}`}><i class="fa fa-lock" aria-hidden="true"></i></Link>}
                         </td>
                         ),
                         'Icon': (item) => (

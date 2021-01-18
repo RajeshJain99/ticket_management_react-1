@@ -20,33 +20,31 @@ import navigation from './_nav'
 const TheSidebar = () => {
   const dispatch = useDispatch()
   const show = useSelector(state => state.sidebarShow)
-   const { user } = React.useContext(userContext);
- 
-   const try_navigation = [];
+  const { user } = React.useContext(userContext);
 
-   const NewNavigation = navigation.map((item, index)=>
-   {
-     if(item.name == "Company"){
-       if(user?.userData.Company.View ==1) {
-         try_navigation.push(item)
-       }
+  const try_navigation = [];
+
+  const NewNavigation = navigation.map((item, index) => {
+    if (item.name == "Company") {
+      if (user?.userData.Company?.View == 1) {
+        try_navigation.push(item)
       }
-      if(item.name == "Roles"){
-       if(user?.userData.Roles.View ==1) {
-         try_navigation.push(item)
-       }
+    } else if (item.name == "Roles") {
+      if (user?.userData.Roles?.View == 1) {
+        try_navigation.push(item)
       }
-      if(item.name == "Users"){
-       if(user?.userData.User.View ==1) {
-         try_navigation.push(item)
-       }
+    } else if (item.name == "Users") {
+      if (user?.userData.User?.View == 1) {
+        try_navigation.push(item)
       }
-      if(item.name == "Branch"){
-       if(user?.userData.Branch.View ==1) {
-         try_navigation.push(item)
-       }
+    } else if (item.name == "Branch") {
+      if (user?.userData.Branch?.View == 1) {
+        try_navigation.push(item)
       }
-   })
+    } else {
+      try_navigation.push(item)
+    }
+  })
 
   return (
     <CSidebar
@@ -69,7 +67,7 @@ const TheSidebar = () => {
 
         <CCreateElement
           items={try_navigation}
-         
+
           components={{
             CSidebarNavDivider,
             CSidebarNavDropdown,
