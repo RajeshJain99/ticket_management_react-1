@@ -3,15 +3,15 @@ import React from 'react'
 import { userContext } from '../../context/UserContext'
 import { toast, ToastContainer } from 'react-toastify'
 import { fetchContext } from '../../context/FetchContext'
-import { useHistory ,useParams } from 'react-router-dom';
-import {url} from  'src/helpers/Helpers';
+import { useHistory, useParams } from 'react-router-dom';
+import { url } from 'src/helpers/Helpers';
 import validator from 'validator'
-import react from 'react';
+import Select from 'react-select'
 
 
 
 export default function CreateBranch() {
-     const { id } = useParams();
+    const { id } = useParams();
     const [branchName, setBranchName] = React.useState('');
     const [address, setAddress] = React.useState('');
     const [countryId, setCountryId] = React.useState('');
@@ -23,26 +23,28 @@ export default function CreateBranch() {
     const [email, setEmail] = React.useState('');
     const [mobileno, setMobileno] = React.useState('');
     const [companyid, setCompanyId] = React.useState('');
+    const [originalEmail,setOriginalEmail] = React.useState('');
     const { user } = React.useContext(userContext);
     const history = useHistory();
 
     const { allCountries, getStates, getCities } = React.useContext(fetchContext)
-   
+    
+
     const setStatefunc = value => {
         setStateId(value)
-        setMatchCities(getCities(value))
+        setMatchCities(getCities(value.value))
     }
 
     const setcountryfunc = (value) => {
         setCountryId(value);
-        setMatchStates(getStates(value))
+        setMatchStates(getStates(value.value))
         setStateId('')
         setCityId('')
         setMatchCities([])
     }
 
     React.useEffect(() => {
-        async function getComapny() { 
+        async function getComapny() {
             const response = await fetch(url + 'fetchCompaniesRoleBranch/', {
                 headers: {
                     'Authorization': user.token
@@ -50,22 +52,27 @@ export default function CreateBranch() {
             });
             if (response.ok == true) {
                 const data = await response.json();
-            
-            if (data.status == 200) {
-                 let company = data.companies_data;
-                    setCompany(company);
+
+                if (data.status == 200) {
+                    let company = data.companies_data;
+                    setCompany(company.map(item => {
+                        return {
+                            value: item.id,
+                            label: item.name
+                        }
+                    }))
+                }
+                else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404'
+                }
+                else {
+                    toast.error(data.message)
+                }
             }
-            else if(data.status == 404) {
-               return window.location = window.location.origin + '/#/404'
-            }
-            else {
-                toast.error(data.message)
-            }
-            }
-            
+
         }
-        
-         async function FetchBranchData() {
+
+        async function FetchBranchData() {
             const response = await fetch(url + 'edit/branch/' + id, {
                 headers: {
                     'Authorization': user.token
@@ -77,18 +84,37 @@ export default function CreateBranch() {
 
                 if (data.status == 200) {
                     let BranchData = data.branch_data;
-                    console.log(BranchData);
                     setBranchName(BranchData.name);
                     setAddress(BranchData.address);
-                    setCountryId(BranchData.country_Id);
-                    setcountryfunc(BranchData.country_id);
-                    setCityId(BranchData.cityId);
-                    setStateId(BranchData.stateId);
-                    setStatefunc(BranchData.state_id);
-                    setCompanyId(BranchData.company_id);
                     setMobileno(BranchData.mobile);
                     setEmail(BranchData.email);
-                  
+                    setOriginalEmail(BranchData.email)
+                    setCountryId({
+                        value: BranchData.country_id,
+                        label: BranchData.country_name
+                    })
+                    setcountryfunc({
+                        value: BranchData.country_id,
+                        label: BranchData.country_name
+                    })
+                    setStateId({
+                        value: BranchData.state_id,
+                        label: BranchData.state_name
+                    })
+                    setStatefunc({
+                        value: BranchData.state_id,
+                        label: BranchData.state_name
+                    })
+                    setCityId({
+                        value: BranchData.city_id,
+                        label: BranchData.city_name
+                    })
+                    setCompanyId({
+                        value: BranchData.company_id,
+                        label: BranchData.company_name
+
+                    })
+
                 } else if (data.status == 401) {
                     toast.error('Unable to fetch the data please reload the page or try again later')
                 } else {
@@ -108,19 +134,20 @@ export default function CreateBranch() {
                 formdata.append('branch_id', id)
                 formdata.append('name', branchName)
                 formdata.append('address', address)
-                formdata.append('country_id', countryId)
-                formdata.append('state_id', stateId)
-                formdata.append('city_id', cityId)
-               if (user?.userData.role_id == 1) {
-                    formdata.append('company_id',  user?.userData.company_id)
+                formdata.append('country_id', countryId.value)
+                formdata.append('state_id', stateId.value)
+                formdata.append('city_id', cityId.value)
+                if (user?.userData.role_id == 1) {
+                    formdata.append('company_id', companyid.value)
                 }
                 else {
-                    formdata.append('company_id',companyid)
+                    formdata.append('company_id', user?.userData.company_id)
                 }
-                formdata.append('email', email)
+                formdata.append('orignal_email', originalEmail)
+                formdata.append('email',email)
                 formdata.append('mobile', mobileno)
                 const response = await fetch(url + 'updateBranch/', {
-                    method :"POST",
+                    method: "POST",
                     headers: {
                         'Authorization': user.token
                     },
@@ -128,15 +155,16 @@ export default function CreateBranch() {
                 })
                 if (response.ok == true) {
                     const data = await response.json()
-                    if(data.status==200) {
+                    if (data.status == 200) {
                         return history.push('/branchList/')
-                     } else if (data.status==404) {
-                         return window.location = window.location.origin + '/#/404'
-                     } else {
-                         toast.error(data.message)
-                     }
-                    
-                } 
+                    } else if (data.status == 404) {
+                        return window.location = window.location.origin + '/#/404'
+                    } else {
+                        setEmail(data?.condition)
+                        toast.error(data.message)
+                    }
+
+                }
 
             }
             submitBranch()
@@ -164,7 +192,7 @@ export default function CreateBranch() {
                                 <input required value={email} onChange={e => setEmail(e.target.value)} type="email" className="form-control" />
                             </div>
                         </div>
-                      <div className="col-md-4">
+                        <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Mobile no</label>
                                 <input required value={mobileno} onChange={e => setMobileno(e.target.value)} type="text" className="form-control" />
@@ -174,54 +202,34 @@ export default function CreateBranch() {
                     <div className="row">
                         <div className="col-md-4">
                             <label htmlFor="">Country</label>
-                            <select className='form-control' value={countryId} onChange={e => setcountryfunc(e.target.value)} required >
-                                <option>Select Country</option>
-                                {allCountries?.map(item => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
+                            <Select options={allCountries} value={countryId} onChange={setcountryfunc} />
                         </div>
                         <div className="col-md-4">
                             <label htmlFor="">State</label>
-                            <select required className='form-control' value={stateId} onChange={e => setStatefunc(e.target.value)}>
-                                <option>Select States</option>
-                                {matchStates?.map(item => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
+                            <Select options={matchStates} value={stateId} onChange={setStatefunc} />
                         </div>
                         <div className="col-md-4">
                             <label htmlFor="">City</label>
-                            <select required className='form-control' value={cityId} onChange={e => setCityId(e.target.value)}>
-                                <option>Select Cities</option>
-                                {matchCities?.map(item => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
+                            <Select options={matchCities} value={cityId} onChange={setCityId} />
                         </div>
                     </div>
                     <br />
-                    { user?.userData.role_id == 1 && <div className="row">
-                        
-                       <div className="col-md-4">
+                    {user?.userData.role_id == 1 && <div className="row">
+
+                        <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Company</label>
-                                <select className="form-control" required onChange={e => setCompanyId(e.target.companyid)} >
-                                    <option>Select Company</option>
-                                    {company?.map(item => (
-                                        <option value={item.id}>{item.name}</option>
-                                    ))}
-                                </select>
+                                <Select options={company} value={companyid} onChange={setCompanyId} />
                             </div>
                         </div>
-                        </div>}
-                   
-                      <div className="row">
+                    </div>}
+
+                    <div className="row">
                         <div className="col-md-12 mt-4">
                             <label htmlFor="">Address</label>
                             <textarea required value={address} onChange={e => setAddress(e.target.value)} className='form-control' cols="137" rows="10"></textarea>
                         </div>
-                       </div>
+                    </div>
 
                     <div className="row mt-4 big-btn-div">
                         <button type='submit' className='btn btn-primary'>Submit</button>

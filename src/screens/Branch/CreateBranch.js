@@ -6,6 +6,7 @@ import { fetchContext } from '../../context/FetchContext'
 import { useHistory } from 'react-router-dom';
 import { url } from 'src/helpers/Helpers';
 import validator from 'validator'
+import Select from 'react-select'
 
 
 
@@ -24,17 +25,17 @@ export default function CreateBranch() {
     const [mobileno, setMobileno] = React.useState('');
     const { user } = React.useContext(userContext);
     const history = useHistory();
-
+    
     const { allCountries, getStates, getCities } = React.useContext(fetchContext)
 
     const setStatefunc = value => {
         setStateId(value)
-        setMatchCities(getCities(value))
+        setMatchCities(getCities(value.value))
     }
 
     const setcountryfunc = (value) => {
         setCountryId(value);
-        setMatchStates(getStates(value))
+        setMatchStates(getStates(value.value))
         setStateId('')
         setCityId('')
         setMatchCities([])
@@ -53,7 +54,13 @@ export default function CreateBranch() {
                 const data = await response.json()
                 if (data.status == 200) {
                     let company = data.companies_data;
-                    setCompany(company);
+                    // setCompany(company);
+                    setCompany(company.map(item=>{
+                        return {
+                            value : item.id,
+                            label : item.name
+                        }
+                    }))
                 }
                  else if (data.status ==404){
                     return window.location = window.location.origin + '/#/404'
@@ -73,14 +80,14 @@ export default function CreateBranch() {
                 const formdata = new FormData();
                 formdata.append('name', branchName)
                 formdata.append('address', address)
-                formdata.append('country_id', countryId)
-                formdata.append('state_id', stateId)
-                formdata.append('city_id', cityId)
+                formdata.append('country_id', countryId.value)
+                formdata.append('state_id', stateId.value)
+                formdata.append('city_id', cityId.value)
                 if (user?.userData.role_id==1) {
-                    formdata.append('company_id', user?.userData.company_id)
+                    formdata.append('company_id', companyid.value)
                 }
                 else{
-                    formdata.append('company_id', companyid)
+                    formdata.append('company_id', user?.userData.company_id)
                 }
                 formdata.append('email', email)
                 formdata.append('mobile', mobileno)
@@ -141,30 +148,15 @@ export default function CreateBranch() {
                     <div className="row">
                         <div className="col-md-4">
                             <label htmlFor="">Country</label>
-                            <select className='form-control' value={countryId} onChange={e => setcountryfunc(e.target.value)} required >
-                                <option>Select Country</option>
-                                {allCountries?.map(item => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
+                            <Select options={allCountries} value={countryId} onChange={setcountryfunc} />
                         </div>
                         <div className="col-md-4">
                             <label htmlFor="">State</label>
-                            <select required className='form-control' value={stateId} onChange={e => setStatefunc(e.target.value)}>
-                                <option>Select States</option>
-                                {matchStates?.map(item => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
+                            <Select options={matchStates} value={stateId} onChange={setStatefunc} />
                         </div>
                         <div className="col-md-4">
                             <label htmlFor="">City</label>
-                            <select required className='form-control' value={cityId} onChange={e => setCityId(e.target.value)}>
-                                <option>Select Cities</option>
-                                {matchCities?.map(item => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
+                            <Select options={matchCities} value={cityId} onChange={setCityId} />
                         </div>
                     </div>
                     <br />
@@ -173,14 +165,10 @@ export default function CreateBranch() {
                        <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Company</label>
-                                <select className="form-control" required onChange={e => setCompanyId(e.target.companyid)} >
-                                    <option>Select Company</option>
-                                    {company?.map(item => (
-                                        <option value={item.id}>{item.name}</option>
-                                    ))}
-                                </select>
+                                <Select options={company} value={companyid} onChange={setCompanyId} />
                             </div>
                         </div>
+                        
                         </div>}
                           <div className="row">
                         <div className="col-md-12 mt-4">

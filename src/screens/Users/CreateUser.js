@@ -4,6 +4,7 @@ import { url } from 'src/helpers/Helpers';
 import { userContext } from '../../context/UserContext'
 import { useHistory } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify';
+import Select from 'react-select'
 
 export default function CreateUser() {
     const history = useHistory();
@@ -31,12 +32,30 @@ export default function CreateUser() {
             if (response.ok == true) {
                 const data = await response.json()
                 if (data.status == 200) {
-                    let role = data.role_data;
+                   let role = data.role_data;
                     let company = data.companies_data;
                     let branch = data.branch_data;
-
-                    setRole(role);
-                    setCompany(company);
+                      console.log(data);
+                        setCompany(company.map(item=>{
+                        return {
+                            value : item.id,
+                            label : item.name
+                        }
+                        }))
+                        setRole(role.map(item=>{
+                        return{
+                            value :item.id,
+                            label :item.name
+                        }
+                        }))
+                        setBranch(branch.map(item=>
+                        {
+                            return{
+                                value :item.id,
+                                label :item.name
+                            }
+                        }))
+                    
                     setBranch(branch);
 
                 } else if (data.status == 404) {
@@ -59,9 +78,9 @@ export default function CreateUser() {
             formData.append('lname', lastName)
             formData.append('email', email)
             formData.append('mobile', mobileno)
-            formData.append('roleid', roleid)
-            formData.append('comapnyid', companyid)
-            formData.append('branchid', branchid)
+            formData.append('roleid', roleid.value)
+            formData.append('comapnyid', companyid.value)
+            formData.append('branchid', branchid.value)
 
             const response = await fetch(url + '', {
                 method: 'POST',
@@ -126,23 +145,13 @@ export default function CreateUser() {
                         <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Company</label>
-                                <select className="form-control" required onChange={e => setCompanyId(e.target.companyid)} >
-                                    <option>Select Company</option>
-                                    {company?.map(item => (
-                                        <option value={item.id}>{item.name}</option>
-                                    ))}
-                                </select>
-                            </div>
+                                <Select options={company} value={companyid} onChange={setCompanyId} />
+                             </div>
                         </div>
                         <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Role</label>
-                                <select className='form-control' required onChange={e => setRoleId(e.target.value)} >
-                                    <option>Select Role</option>
-                                    {role?.map(item => (
-                                        <option value={item.id}>{item.name}</option>
-                                    ))}
-                                </select>
+                                <Select options={role} value={roleid} onChange={setRoleId} />
                             </div>
                         </div>
                     </div>
@@ -150,12 +159,7 @@ export default function CreateUser() {
                         <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Branch</label>
-                                <select className="form-control" required onChange={e => setBranchId(e.target.branchid)} >
-                                    <option>Select Branch</option>
-                                    {branch?.map(item => (
-                                        <option value={item.id}>{item.name}</option>
-                                    ))}
-                                </select>
+                               <Select options={branch} value={branchid} onChange={setBranchId} />
                             </div>
                         </div>
 
