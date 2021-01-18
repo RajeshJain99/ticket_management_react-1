@@ -73,26 +73,38 @@ export default function CreateBranch() {
                 const formdata = new FormData();
                 formdata.append('name', branchName)
                 formdata.append('address', address)
-                formdata.append('countryid', countryId)
-                formdata.append('stateid', stateId)
-                formdata.append('cityid', cityId)
+                formdata.append('country_id', countryId)
+                formdata.append('state_id', stateId)
+                formdata.append('city_id', cityId)
                 if (user?.userData.role_id==1) {
-                    formdata.append('companyid', companyid)
+                    formdata.append('company_id', user?.userData.company_id)
                 }
                 else{
-                    formdata.append('companyid', user?.userData.company_id)
+                    formdata.append('company_id', companyid)
                 }
                 formdata.append('email', email)
                 formdata.append('mobile', mobileno)
-                const response = await fetch(url + '', {
+
+                const response = await fetch(url + 'createBranch/', {
+                    method:'POST',
                     headers: {
                         'Authorization': user.token
                     },
                     body: formdata
                 })
                 if (response.ok == true) {
-                    return history.push('/branchList/')
+                    const data = await response.json()
+                    
+                    if(data.status==200){
+                      return history.push('/branchList/')
+                    } else if (data.status==404) {
+                        return window.location = window.location.origin + '/#/404';
+                    } else {
+                        toast.error(data.message);
+                    }
+
                 }
+
             }
             submitBranch()
         }

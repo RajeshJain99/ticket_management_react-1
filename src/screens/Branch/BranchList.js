@@ -9,14 +9,14 @@ import { url } from 'src/helpers/Helpers';
 
 export default function BranchList() {
     const { user } = React.useContext(userContext);
-    const fields = ['#', 'name', 'address','company name', 'email', 'mobile']
+    const fields = ['#', 'name', 'address','companyName', 'email', 'mobile','actions']
     const [allBranches, setallBranches] = React.useState('');
     const [modal, setModal] = React.useState('');
     const [deleteId, setDeleteId] = React.useState('');
 
      React.useEffect(() => {
         async function GetBranchData() {
-            const response = await fetch(url + ''
+            const response = await fetch(url + 'branchList/'
             ,{
                 headers : {
                     'Authorization' : user.token
@@ -26,8 +26,8 @@ export default function BranchList() {
                 const data = await response.json();
 
                 if (data.status == 200) {
-                    setallBranches(data.branches)
-                 }
+                    setallBranches(data.branch_data)
+                   }
                 else if(data.status == 404){
                      return window.location = window.location.origin + '/#/404';
                 }
@@ -43,19 +43,18 @@ export default function BranchList() {
     const deleteEntry = () => { 
       async function deleteBranch()
       {
-       const response= await fetch( url +'' + deleteId,{
+       const response= await fetch( url +'deleteBranch/' + deleteId,{
            headers:{
                'Authorization':user.token
            }
        });
        if(response.ok==true){
-           const data = await response.json;
+           const data = await response.json()
            if(data.status==200){
-               setallBranches(data.branches)
                setModal(false);
-               toast.success("Information Deleted Successfully")
+               return window.location.reload()
            } else if(data.status ==404){
-               return window.location = window.location.origin + '/#/404'
+               return window.location = window.location.origin + '/#/404/'
            } else {
                toast.error(data.message)
            }
