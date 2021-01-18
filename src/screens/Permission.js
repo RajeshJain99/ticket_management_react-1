@@ -16,8 +16,10 @@ export default function Permission() {
     const addPermission = (value) => {
         let final_list = {}
 
+
         for (let i = 0; i < parentPermission.length; i++) {
             let second_list = [];
+            let third_list = []
             let permission = $(`.${parentPermission[i].Parent_name} > input:checked`);
 
             if (permission.length > 0) {
@@ -25,13 +27,12 @@ export default function Permission() {
                     let item = permission[j];
                     second_list.push($(item).attr('data-type'))
                 }
-                
+
                 final_list[parentPermission[i].id] = second_list;
+            } else {
+                final_list[parentPermission[i].id] = []
             }
         }
-
-
-        console.log(final_list);
 
         async function sendPermission() {
             const formData = new FormData();
@@ -48,10 +49,10 @@ export default function Permission() {
 
             if (response.ok == true) {
                 const data = await response.json()
-                  if (data.status == 200) {
+                if (data.status == 200) {
                     toast.success(data.message);
-                } else if (data.status ==404) {
-                    return window.location= window.location.origin +'/#/404'
+                } else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404'
                 } else {
                     toast.error(data.message);
                 }
@@ -82,6 +83,49 @@ export default function Permission() {
     }, [id])
 
 
+    const setCheckbox = () => {
+
+        parentPermission.map(item => {
+            const checkebox = $(`.${item.Parent_name} > input`)
+
+            for (let i = 0; i < checkebox.length; i++) {
+                const chekBox = checkebox[i]
+                const data_type = $(chekBox).attr('data-type');
+
+
+                if (data_type == 'View') {
+                    if (item.View == 'checked') {
+                        chekBox.checked = true
+                    }
+                }
+                if (data_type == 'Add') {
+                    if (item.Add == 'checked') {
+                        chekBox.checked = true
+
+                    }
+                }
+                if (data_type == 'Edit') {
+                    if (item.Edit == 'checked') {
+                        chekBox.checked = true
+
+                    }
+                }
+
+                if (data_type == 'Delete') {
+                    if (item.Delete == 'checked') {
+                        chekBox.checked = true
+
+                    }
+                }
+
+            }
+            return
+        })
+    }
+    setCheckbox();
+
+
+    console.log('by');
     return (
         <section>
             <ToastContainer />
@@ -91,21 +135,21 @@ export default function Permission() {
                         <h3>{item.Parent_name}</h3>
                         <div className='checkbox_div'>
                             <div className={`${item.Parent_name} input-div`}>
-                                <input className={`${item.Parent_name}`} data-type='View' type="checkbox" checked={item.Condition.find(item1 => item1 == 'View')} />
+                                <input data-type='View' type="checkbox" />
                                 <label htmlFor="">View</label>
                             </div>
                             <div className={`${item.Parent_name} input-div`}>
 
-                                <input className={`${item.Parent_name}`} data-type='Add' type="checkbox" checked={item.Condition.find(item1 => item1 == 'Add')} />
+                                <input data-type='Add' type="checkbox" />
                                 <label htmlFor="">Add</label>
                             </div>
                             <div className={`${item.Parent_name} input-div`}>
-                                <input className={`${item.Parent_name}`} data-type='Edit' type="checkbox" checked={item.Condition.find(item1 => item1 == 'Edit')} />
+                                <input data-type='Edit' type="checkbox" />
 
                                 <label htmlFor="">Edit</label>
                             </div>
                             <div className={`${item.Parent_name} input-div`}>
-                                <input className={`${item.Parent_name}`} data-type='Delete' type="checkbox" checked={item.Condition.find(item1 => item1 == 'Delete')} />
+                                <input data-type='Delete' type="checkbox" />
 
                                 <label htmlFor="">Delete</label>
                             </div>

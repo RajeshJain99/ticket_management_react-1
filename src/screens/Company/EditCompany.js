@@ -6,6 +6,7 @@ import { userContext } from '../../context/UserContext'
 import { fetchContext } from '../../context/FetchContext'
 import { useHistory } from 'react-router-dom'
 import validator from 'validator'
+import Select from 'react-select'
 
 export default function EditCompany() {
     const history = useHistory();
@@ -23,17 +24,17 @@ export default function EditCompany() {
     const [address, setAddress] = React.useState('')
 
 
-    const { allCountries, getStates, getCities } = React.useContext(fetchContext)
+    const { allCountries, allStates, allCities, getStates, getCities } = React.useContext(fetchContext)
 
 
     const setStatefunc = value => {
         setStateId(value)
-        setMatchCities(getCities(value))
+        setMatchCities(getCities(value.value))
     }
 
     const setcountryfunc = (value) => {
         setCountryId(value);
-        setMatchStates(getStates(value))
+        setMatchStates(getStates(value.value))
         setStateId('')
         setCityId('')
         setMatchCities([])
@@ -47,9 +48,9 @@ export default function EditCompany() {
                 formData.append('name', companyName)
                 formData.append('mobile', mobile)
                 formData.append('email', email)
-                formData.append('country_id', countryId)
-                formData.append('state_id', stateId)
-                formData.append('city_id', cityId)
+                formData.append('country_id', countryId.value)
+                formData.append('state_id', stateId.value)
+                formData.append('city_id', cityId.value)
                 formData.append('address', address)
                 formData.append('company_id', id)
 
@@ -97,12 +98,29 @@ export default function EditCompany() {
                     setCompanyName(companyData.name);
                     setEmail(companyData.email);
                     setMobile(companyData.mobile);
-                    setCountryId(companyData.country_id);
-                    setcountryfunc(companyData.country_id);
-                    setStateId(companyData.state_id);
-                    setStatefunc(companyData.state_id);
-                    setCityId(companyData.city_id);
                     setAddress(companyData.address);
+                    setCountryId({
+                        value: companyData.country_id,
+                        label: companyData.country_name
+                    });
+                    setcountryfunc({
+                        value: companyData.country_id,
+                        label: companyData.country_name
+                    })
+                    setStateId({
+                        value: companyData.state_id,
+                        label: companyData.state_name
+                    })
+                    setStatefunc({
+                        value: companyData.state_id,
+                        label: companyData.state_name
+                    })
+
+                    setCityId({
+                        value: companyData.city_id,
+                        label: companyData.city_name
+                    })
+
                 } else if (data.status == 401) {
                     toast.error('Unable to fetch the data please reload the page or try again later')
                 }
@@ -142,30 +160,15 @@ export default function EditCompany() {
                     <div className="row">
                         <div className="col-md-4">
                             <label htmlFor="">Country</label>
-                            <select required className='form-control' value={countryId} onChange={e => setcountryfunc(e.target.value)} >
-                                <option>Select Country</option>
-                                {allCountries?.map(item => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
+                            <Select value={countryId} options={allCountries} onChange={setcountryfunc} />
                         </div>
                         <div className="col-md-4">
                             <label htmlFor="">State</label>
-                            <select required className='form-control' value={stateId} onChange={e => setStatefunc(e.target.value)}>
-                                <option>Select States</option>
-                                {matchStates?.map(item => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
+                            <Select value={stateId} options={matchStates} onChange={setStatefunc} />
                         </div>
                         <div className="col-md-4">
                             <label htmlFor="">City</label>
-                            <select required className='form-control' value={cityId} onChange={e => setCityId(e.target.value)}>
-                                <option>Select Cities</option>
-                                {matchCities?.map(item => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
+                            <Select value={cityId} options={matchCities} onChange={setCityId} />
                         </div>
                     </div>
                     <div className="row">
