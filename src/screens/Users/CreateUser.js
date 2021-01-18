@@ -5,12 +5,11 @@ import { userContext } from '../../context/UserContext'
 import { useHistory } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify';
 
-
 export default function CreateUser() {
     const history = useHistory();
     const { user } = React.useContext(userContext);
-    const[firstName,SetFirstName]= React.useState('');
-    const[lastName,setLastName]= React.useState('');
+    const [firstName, SetFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [mobileno, setMobileno] = React.useState('');
     const [role, setRole] = React.useState([]);
@@ -19,8 +18,8 @@ export default function CreateUser() {
     const [roleid, setRoleId] = React.useState('');
     const [companyid, setCompanyId] = React.useState('');
     const [branchid, setBranchId] = React.useState('');
-
-    React.useEffect(() => {
+    
+   React.useEffect(() => {
 
         async function FetchDropDownData() {
             const response = await fetch(url + 'fetchCompaniesRoleBranch/', {
@@ -40,25 +39,25 @@ export default function CreateUser() {
                     setCompany(company);
                     setBranch(branch);
 
-                } else if(data.status==404) {
+                } else if (data.status == 404) {
                     window.location = window.location.origin + '/#/404';
                 }
-                 else {
+                else {
                     toast.error('Unable to fetch the data please reload the page or try again later')
                 }
             }
         }
         FetchDropDownData()
-    },[])
+    }, [])
 
     const handleSubmit = e => {
         e.preventDefault();
 
         async function sumbitUser() {
             const formData = new FormData();
-            formData.append('fname',firstName)
-            formData.append('lname',lastName)
-             formData.append('email', email)
+            formData.append('fname', firstName)
+            formData.append('lname', lastName)
+            formData.append('email', email)
             formData.append('mobile', mobileno)
             formData.append('roleid', roleid)
             formData.append('comapnyid', companyid)
@@ -74,11 +73,11 @@ export default function CreateUser() {
 
             if (response.ok == true) {
                 const data = await response.json()
-                if(data.status==200){
-                return history.push('/userList/')
-                } 
-                else if(data.status==404) {
-                 return  window.location = window.location.origin + '/#/404';
+                if (data.status == 200) {
+                    return history.push('/userList/')
+                }
+                else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404';
                 }
                 else {
                     toast.error(data.message)
@@ -96,19 +95,19 @@ export default function CreateUser() {
             <div className="container">
                 <form onSubmit={e => handleSubmit(e)}>
                     <div className="row">
-                         <div className="col-md-4">
-                           <div className="form-group">
+                        <div className="col-md-4">
+                            <div className="form-group">
                                 <label htmlFor="">First Name</label>
                                 <input required value={firstName} onChange={e => SetFirstName(e.target.value)} type="text" className="form-control" />
                             </div>
                         </div>
-                         <div className="col-md-4">
-                           <div className="form-group">
+                        <div className="col-md-4">
+                            <div className="form-group">
                                 <label htmlFor="">Last Name</label>
                                 <input required value={lastName} onChange={e => setLastName(e.target.value)} type="text" className="form-control" />
                             </div>
                         </div>
-                        
+
                         <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Mobile No.</label>
@@ -123,7 +122,7 @@ export default function CreateUser() {
                                 <input required value={email} onChange={e => setEmail(e.target.value)} type="text" className="form-control" />
                             </div>
                         </div>
-                      
+
                         <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Company</label>
@@ -135,7 +134,7 @@ export default function CreateUser() {
                                 </select>
                             </div>
                         </div>
-                         <div className="col-md-4">
+                        <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Role</label>
                                 <select className='form-control' required onChange={e => setRoleId(e.target.value)} >
@@ -159,11 +158,13 @@ export default function CreateUser() {
                                 </select>
                             </div>
                         </div>
-						 
-                     </div>
+
+                    </div>
                     <div className="row mt-4 big-btn-div">
                         <button type='submit' className='btn btn-success'>Submit</button>
                     </div>
+
+                 
                 </form>
             </div>
         </section>

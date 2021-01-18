@@ -15,7 +15,7 @@ export default function UserList() {
     
     React.useEffect(() => {
         async function getUsers() {
-            const response = await fetch(url + '',{
+            const response = await fetch(url + 'userList/',{
                 headers : {
                     'Authorization' : user.token
                 }
@@ -24,7 +24,7 @@ export default function UserList() {
                 const data = await response.json();
 
                 if (data.status == 200) {
-                    setallUsers()
+                    setallUsers(data.userData)
                 } else if (data.status==404){
                     return window.location = window.location.origin + '/#/404';
                 } else {
