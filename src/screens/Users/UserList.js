@@ -110,7 +110,6 @@ export default function UserList() {
                     hover
                     sorter
                     scopedSlots={{
-<<<<<<< HEAD
                         'status': item => (
                             <td>
                                 <CBadge color={getBadge(item.status)}>
@@ -118,8 +117,6 @@ export default function UserList() {
                                 </CBadge>
                             </td>
                         ),
-=======
->>>>>>> 4ee887b720c8967c1c7210ef25a363b30172cd2b
                         'actions': (item, index) =>
                         (<td className='action-td'>
                             <Link to={`/edit/user/${item.id}`}><i class="fa fa-pencil" aria-hidden="true"></i></Link>
