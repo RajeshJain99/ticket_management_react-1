@@ -33,6 +33,11 @@ export default function CreateUser() {
         setFilterBranch(branch.filter(item => item.company_id == value.value))
     }
 
+    const changeBranch = value => {
+        setBranchId(value)
+        setFilterBranch(branch.filter(item => item.company_id == companyid.value))
+    }
+
 
     React.useEffect(() => {
 
@@ -106,14 +111,13 @@ export default function CreateUser() {
                         label: userData.companyname
 
                     })
-                    setFilterBranch(branch_data.filter(item=>item.company_id == userData.companyid))
-                    // setFilterBranch(branch_data.filter(item => {
-                    //     if (item.company_id == userData.companyid){
-                    //         // if (!branch_ids.includes(item.value.toString())){
-                    //             return item
-                    //         // }
-                    //     }
-                    // }))
+                    setFilterBranch(branch_data.filter(item => {
+                        if (item.company_id == userData.companyid) {
+                            if (!branch_ids.includes(item.value.toString())) {
+                                return item
+                            }
+                        }
+                    }))
                     setRoleId({
                         value: userData.roleid,
                         label: userData.rolename
@@ -237,7 +241,7 @@ export default function CreateUser() {
                         <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Branch</label>
-                                <Select isMulti options={filterBranch} value={branchid} defaultValue={branchid} onChange={setBranchId} />
+                                <Select isMulti options={filterBranch} value={branchid} onChange={changeBranch} />
                             </div>
                         </div>
 
