@@ -25,7 +25,7 @@ export default function CreateBranch() {
     const [mobileno, setMobileno] = React.useState('');
     const { user } = React.useContext(userContext);
     const history = useHistory();
-    
+
     const { allCountries, getStates, getCities } = React.useContext(fetchContext)
 
     const setStatefunc = value => {
@@ -40,34 +40,34 @@ export default function CreateBranch() {
         setCityId('')
         setMatchCities([])
     }
-   
+
     React.useEffect(() => {
-    
+
         async function getCompanyDropDown() {
             const response = await fetch(url + 'fetchCompaniesRoleBranch/', {
                 headers: {
                     'Authorization': user.token
                 }
-            }); 
-           
+            });
+
             if (response.ok == true) {
                 const data = await response.json()
                 if (data.status == 200) {
                     let company = data.companies_data;
                     // setCompany(company);
-                    setCompany(company.map(item=>{
+                    setCompany(company.map(item => {
                         return {
-                            value : item.id,
-                            label : item.name
+                            value: item.id,
+                            label: item.name
                         }
                     }))
                 }
-                 else if (data.status ==404){
+                else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404'
                 }
                 else {
-                toast.error(data.message)
-            }
+                    toast.error(data.message)
+                }
             }
         }
         getCompanyDropDown()
@@ -75,48 +75,53 @@ export default function CreateBranch() {
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (validator.isMobilePhone(mobileno)) {
-            async function submitBranch() {
-                const formdata = new FormData();
-                formdata.append('name', branchName)
-                formdata.append('address', address)
-                formdata.append('country_id', countryId.value)
-                formdata.append('state_id', stateId.value)
-                formdata.append('city_id', cityId.value)
-                if (user?.userData.role_id==1) {
-                    formdata.append('company_id', companyid.value)
-                }
-                else{
-                    formdata.append('company_id', user?.userData.company_id)
-                }
-                formdata.append('email', email)
-                formdata.append('mobile', mobileno)
+        if (countryId && stateId && cityId) {
+            if (validator.isMobilePhone(mobileno)) {
+                async function submitBranch() {
+                    const formdata = new FormData();
+                    formdata.append('name', branchName)
+                    formdata.append('address', address)
+                    formdata.append('country_id', countryId.value)
+                    formdata.append('state_id', stateId.value)
+                    formdata.append('city_id', cityId.value)
+                    if (user?.userData.role_id == 1) {
+                        formdata.append('company_id', companyid.value)
+                    }
+                    else {
+                        formdata.append('company_id', user?.userData.company_id)
+                    }
+                    formdata.append('email', email)
+                    formdata.append('mobile', mobileno)
 
-                const response = await fetch(url + 'createBranch/', {
-                    method:'POST',
-                    headers: {
-                        'Authorization': user.token
-                    },
-                    body: formdata
-                })
-                if (response.ok == true) {
-                    const data = await response.json()
-                    
-                    if(data.status==200){
-                      return history.push('/branchList/')
-                    } else if (data.status==404) {
-                        return window.location = window.location.origin + '/#/404';
-                    } else {
-                        toast.error(data.message);
+                    const response = await fetch(url + 'createBranch/', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': user.token
+                        },
+                        body: formdata
+                    })
+                    if (response.ok == true) {
+                        const data = await response.json()
+
+                        if (data.status == 200) {
+                            return history.push('/branchList/')
+                        } else if (data.status == 404) {
+                            return window.location = window.location.origin + '/#/404';
+                        } else {
+                            toast.error(data.message);
+                        }
+
                     }
 
                 }
-
+                submitBranch()
             }
-            submitBranch()
+            else {
+                toast.error("Invaild Phone Number")
+            }
         }
         else {
-            toast.error("Invaild Phone Number")
+            toast.error("Select Dropdown Values First")
         }
     }
 
@@ -138,7 +143,7 @@ export default function CreateBranch() {
                                 <input required value={email} onChange={e => setEmail(e.target.value)} type="email" className="form-control" />
                             </div>
                         </div>
-                         <div className="col-md-4">
+                        <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Mobile no</label>
                                 <input required value={mobileno} onChange={e => setMobileno(e.target.value)} type="text" className="form-control" />
@@ -160,23 +165,23 @@ export default function CreateBranch() {
                         </div>
                     </div>
                     <br />
-                   { user?.userData.role_id == 1 && <div className="row">
-                        
-                       <div className="col-md-4">
+                    {user?.userData.role_id == 1 && <div className="row">
+
+                        <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Select Company</label>
                                 <Select options={company} value={companyid} onChange={setCompanyId} />
                             </div>
                         </div>
-                        
-                        </div>}
-                          <div className="row">
+
+                    </div>}
+                    <div className="row">
                         <div className="col-md-12 mt-4">
                             <label htmlFor="">Address</label>
                             <textarea required value={address} onChange={e => setAddress(e.target.value)} className='form-control' cols="137" rows="10"></textarea>
                         </div>
-                       </div>
-                      
+                    </div>
+
                     <div className="row mt-4 big-btn-div">
                         <button type='submit' className='btn btn-primary'>Submit</button>
                     </div>

@@ -8,16 +8,16 @@ import CustomModal from '../../components/CustomModal'
 
 export default function UserList() {
     const { user } = React.useContext(userContext);
-    const fields = ['#','companyName', 'name', 'email','role','status','actions']
+    const fields = ['#', 'companyName', 'name', 'email', 'role', 'status', 'actions']
     const [allUsers, setallUsers] = React.useState([]);
     const [modal, setModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState('')
-    
+
     React.useEffect(() => {
         async function getUsers() {
-            const response = await fetch(url + 'userList/',{
-                headers : {
-                    'Authorization' : user.token
+            const response = await fetch(url + 'userList/', {
+                headers: {
+                    'Authorization': user.token
                 }
             })
             if (response.ok === true) {
@@ -25,10 +25,10 @@ export default function UserList() {
 
                 if (data.status == 200) {
                     setallUsers(data.userData)
-                } else if (data.status==404){
+                } else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404';
                 } else {
-                     toast.error(data.message);
+                    toast.error(data.message);
                 }
             }
         }
@@ -41,9 +41,9 @@ export default function UserList() {
     }
 
     const deleteEntry = () => {
-        
+
         async function DeleteUsers() {
-            const response = await fetch(url + '' + deleteId, {
+            const response = await fetch(url + 'deleteUser/' + deleteId, {
                 headers: {
                     'Authorization': user.token
                 }
@@ -53,17 +53,37 @@ export default function UserList() {
                 const data = await response.json()
 
                 if (data.status == 200) {
-                    setallUsers()
-                     setModal(false);
-                    toast.success('Information deleted successfully')
-                } else if(data.status ==404){
+                    setModal(false);
+                    // return  window.location.reload()
+                    async function getUsers() {
+                        const response = await fetch(url + 'userList/', {
+                            headers: {
+                                'Authorization': user.token
+                            }
+                        })
+                        if (response.ok === true) {
+                            const data = await response.json();
+
+                            if (data.status == 200) {
+                                setallUsers(data.userData)
+                            } else if (data.status == 404) {
+                                return window.location = window.location.origin + '/#/404';
+                            } else {
+                                toast.error(data.message);
+                            }
+                        }
+                    }
+                    getUsers()
+                } else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404'
+                } else {
+                    toast.error(data.message);
                 }
             }
         }
         DeleteUsers();
     }
-     return (
+    return (
         <div>
             <ToastContainer />
             <div className='add-btn-div'>
@@ -82,9 +102,9 @@ export default function UserList() {
                     hover
                     sorter
                     scopedSlots={{
-                      'actions': (item, index) =>
+                        'actions': (item, index) =>
                         (<td className='action-td'>
-                            <Link to={`/edit/Users/${item.id}`}><i class="fa fa-pencil" aria-hidden="true"></i></Link>
+                            <Link to={`/edit/user/${item.id}`}><i class="fa fa-pencil" aria-hidden="true"></i></Link>
                             <i onClick={() => deleteUsers(item.id)} class="fa fa-trash-o" aria-hidden="true"></i>
                         </td>
                         ),
