@@ -42,41 +42,45 @@ export default function EditCompany() {
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (validator.isMobilePhone(mobile)) {
-            async function submitCompany() {
-                const formData = new FormData();
-                formData.append('name', companyName)
-                formData.append('mobile', mobile)
-                formData.append('email', email)
-                formData.append('country_id', countryId.value)
-                formData.append('state_id', stateId.value)
-                formData.append('city_id', cityId.value)
-                formData.append('address', address)
-                formData.append('company_id', id)
+        if (stateId && cityId && countryId) {
+            if (validator.isMobilePhone(mobile)) {
+                async function submitCompany() {
+                    const formData = new FormData();
+                    formData.append('name', companyName)
+                    formData.append('mobile', mobile)
+                    formData.append('email', email)
+                    formData.append('country_id', countryId.value)
+                    formData.append('state_id', stateId.value)
+                    formData.append('city_id', cityId.value)
+                    formData.append('address', address)
+                    formData.append('company_id', id)
 
-                const response = await fetch(url + 'update/company', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': user.token,
-                    },
-                    body: formData
-                })
+                    const response = await fetch(url + 'update/company', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': user.token,
+                        },
+                        body: formData
+                    })
 
-                if (response.ok == true) {
-                    const data = await response.json()
-                    if(data.status==200){
-                    return history.push('/companyList/')
+                    if (response.ok == true) {
+                        const data = await response.json()
+                        if (data.status == 200) {
+                            return history.push('/companyList/')
+                        }
+                        else if (data.status == 404) {
+                            return window.location = window.location.origin + '/#/404';
+                        } else {
+                            toast.error(data.message);
+                        }
                     }
-                     else if(data.status==404){
-                      return  window.location=window.location.origin +'/#/404';
-                    } else {
-                      toast.error(data.message);
-                  }  
                 }
+                submitCompany()
+            } else {
+                toast.error('Invalid mobile number');
             }
-            submitCompany()
         } else {
-            toast.error('Invalid mobile number');
+            toast.error('Select Dropdown Values First')
         }
 
     }
@@ -124,8 +128,8 @@ export default function EditCompany() {
                 } else if (data.status == 401) {
                     toast.error('Unable to fetch the data please reload the page or try again later')
                 }
-                 else if(data.status == 404){
-                     return window.location = window.location.origin + '/#/404';
+                else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404';
                 }
             }
         }

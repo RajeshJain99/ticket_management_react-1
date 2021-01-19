@@ -9,27 +9,27 @@ import { url } from 'src/helpers/Helpers';
 
 export default function BranchList() {
     const { user } = React.useContext(userContext);
-    const fields = ['#', 'name', 'address','companyName', 'email', 'mobile','actions']
+    const fields = ['#', 'name', 'address', 'companyName', 'email', 'mobile', 'actions']
     const [allBranches, setallBranches] = React.useState('');
     const [modal, setModal] = React.useState('');
     const [deleteId, setDeleteId] = React.useState('');
 
-     React.useEffect(() => {
+    React.useEffect(() => {
         async function GetBranchData() {
             const response = await fetch(url + 'branchList/'
-            ,{
-                headers : {
-                    'Authorization' : user.token
-                }
-            })
+                , {
+                    headers: {
+                        'Authorization': user.token
+                    }
+                })
             if (response.ok === true) {
                 const data = await response.json();
 
                 if (data.status == 200) {
                     setallBranches(data.branch_data)
-                   }
-                else if(data.status == 404){
-                     return window.location = window.location.origin + '/#/404';
+                }
+                else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404';
                 }
                 else {
                     toast.error(data.message);
@@ -40,33 +40,53 @@ export default function BranchList() {
     }, [])
 
 
-    const deleteEntry = () => { 
-      async function deleteBranch()
-      {
-       const response= await fetch( url +'deleteBranch/' + deleteId,{
-           headers:{
-               'Authorization':user.token
-           }
-       });
-       if(response.ok==true){
-           const data = await response.json()
-           if(data.status==200){
-               setModal(false);
-               return window.location.reload()
-           } else if(data.status ==404){
-               return window.location = window.location.origin + '/#/404/'
-           } else {
-               toast.error(data.message)
-           }
+    const deleteEntry = () => {
+        async function deleteBranch() {
+            const response = await fetch(url + 'deleteBranch/' + deleteId, {
+                headers: {
+                    'Authorization': user.token
+                }
+            });
+            if (response.ok == true) {
+                const data = await response.json()
+                if (data.status == 200) {
+                    setModal(false);
+                    async function GetBranchData() {
+                        const response = await fetch(url + 'branchList/'
+                            , {
+                                headers: {
+                                    'Authorization': user.token
+                                }
+                            })
+                        if (response.ok === true) {
+                            const data = await response.json();
+
+                            if (data.status == 200) {
+                                setallBranches(data.branch_data)
+                            }
+                            else if (data.status == 404) {
+                                return window.location = window.location.origin + '/#/404';
+                            }
+                            else {
+                                toast.error(data.message);
+                            }
+                        }
+                    }
+                    GetBranchData()
+                } else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404/'
+                } else {
+                    toast.error(data.message)
+                }
+            }
         }
-      }
         deleteBranch()
     }
-  
+
     const deleteBranch = (id) => {
-         setModal(true);
-         setDeleteId(id);
-     }
+        setModal(true);
+        setDeleteId(id);
+    }
 
     return (
         <div>
@@ -89,7 +109,7 @@ export default function BranchList() {
                     scopedSlots={{
                         'actions': (items, index) => (
                             <td className='action-td'>
-                                <Link to= {`/edit/branch/${items.id}`}><i className='fa fa-pencil' aria-hidden="true"></i></Link>
+                                <Link to={`/edit/branch/${items.id}`}><i className='fa fa-pencil' aria-hidden="true"></i></Link>
                                 <i onClick={() => deleteBranch(items.id)} className='fa fa-trash-o' aria-aria-hidden="true"></i>
                             </td>
                         )
@@ -97,4 +117,5 @@ export default function BranchList() {
                 />
             </div>
         </div>
- )}
+    )
+}
