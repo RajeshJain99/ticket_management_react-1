@@ -56,6 +56,8 @@ const BranchList= React.lazy(()=>import('./screens/Branch/BranchList'));
 const CreateBranch = React.lazy(()=>import('./screens/Branch/CreateBranch'));
 const EditBranch = React.lazy(()=>import('./screens/Branch/EditBranch'));
 const CreateTicket = React.lazy(()=>import('./screens/Ticket/CreateTicket'));
+const AllTicket = React.lazy(()=>import('./screens/Ticket/AllTickes'));
+const Ticket =React.lazy(()=>import('./screens/Ticket/Ticket'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -115,9 +117,9 @@ const routes = [
   {path : '/branchList',excat:true,name: 'Branch List', component:BranchList },
   {path:'/create/branch', excat:true, name: 'Create Branch', component:CreateBranch},
   {path :'/edit/branch/:id', excat:true,name :'Edit Branch', component: EditBranch},
-  {path:'/create/ticket', excat : true,name :'Create Ticket', component :CreateTicket}
-  
-
+  {path:'/create/ticket', excat : true,name :'Create Ticket', component :CreateTicket},
+  {path:'/allTickests', excat :true,name:'All Tickets', component:AllTicket},
+  {path:'/ticket/:id', excat :true ,name:'Ticket', component:Ticket}
 ];
 
 export default routes;

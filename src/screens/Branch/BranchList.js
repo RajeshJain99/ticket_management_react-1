@@ -6,6 +6,7 @@ import CustomModal from '../../components/CustomModal';
 import { Link } from 'react-router-dom'
 import { CDataTable } from '@coreui/react';
 import { url } from 'src/helpers/Helpers';
+import Loader from 'src/components/Loader'
 
 export default function BranchList() {
     const { user } = React.useContext(userContext);
@@ -13,9 +14,11 @@ export default function BranchList() {
     const [allBranches, setallBranches] = React.useState('');
     const [modal, setModal] = React.useState('');
     const [deleteId, setDeleteId] = React.useState('');
+    const [loading ,setLoading]= React.useState(false);
 
     React.useEffect(() => {
         async function GetBranchData() {
+            setLoading(true);
             const response = await fetch(url + 'branchList/'
                 , {
                     headers: {
@@ -27,12 +30,14 @@ export default function BranchList() {
 
                 if (data.status == 200) {
                     setallBranches(data.branch_data)
+                    setLoading(false);
                 }
                 else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404';
                 }
                 else {
                     toast.error(data.message);
+                    setLoading(false);
                 }
             }
         }
@@ -42,6 +47,8 @@ export default function BranchList() {
 
     const deleteEntry = () => {
         async function deleteBranch() {
+
+            setLoading(true);
             const response = await fetch(url + 'deleteBranch/' + deleteId, {
                 headers: {
                     'Authorization': user.token
@@ -63,12 +70,14 @@ export default function BranchList() {
 
                             if (data.status == 200) {
                                 setallBranches(data.branch_data)
+                                setLoading(false);
                             }
                             else if (data.status == 404) {
                                 return window.location = window.location.origin + '/#/404';
                             }
                             else {
                                 toast.error(data.message);
+                                setLoading(false);
                             }
                         }
                     }
@@ -77,6 +86,7 @@ export default function BranchList() {
                     return window.location = window.location.origin + '/#/404/'
                 } else {
                     toast.error(data.message)
+                    setLoading(false);
                 }
             }
         }
@@ -90,6 +100,7 @@ export default function BranchList() {
 
     return (
         <div>
+            {loading && <Loader/>}
             <ToastContainer />
             <div className='add-btn-div'>
                 <Link to='/create/branch/' className='btn btn-primary'><i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New Branch</Link>

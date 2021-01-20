@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import { Link } from 'react-router-dom';
 import { userContext } from 'src/context/UserContext';
 import CustomModal from '../../components/CustomModal'
+import loader from 'src/components/Loader'
 
 export default function RoleList() {
     const { user } = React.useContext(userContext);
@@ -12,6 +13,7 @@ export default function RoleList() {
     const [allRoles, setAllRoles] = React.useState([]);
     const [modal, setModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState('')
+    const [loading,setLoading] = React.useState(false);
 
     React.useEffect(() => {
         async function getRoles() {

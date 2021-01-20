@@ -36,8 +36,19 @@ const _nav = [
     name: 'Branch',
     to: '/branchList',
     icon: 'cil-puzzle'
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Ticket',
+    to: '/create/ticket/',
+    icon: 'cil-puzzle'
+  },
+ {
+    _tag: 'CSidebarNavItem',
+    name: 'AllTicket',
+    to: '/allTickests',
+    icon: 'cil-puzzle'
   }
-
 ]
 
 export default _nav

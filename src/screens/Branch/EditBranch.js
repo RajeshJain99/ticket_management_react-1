@@ -7,6 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { url } from "src/helpers/Helpers";
 import validator from "validator";
 import Select from "react-select";
+import Loader from 'src/components/Loader'
 
 export default function CreateBranch() {
   const { id } = useParams();
@@ -22,6 +23,7 @@ export default function CreateBranch() {
   const [mobileno, setMobileno] = React.useState("");
   const [companyid, setCompanyId] = React.useState("");
   const [originalEmail, setOriginalEmail] = React.useState("");
+  const[loader,SetLoader] = React.useState(false);
   const { user } = React.useContext(userContext);
   const history = useHistory();
 
@@ -42,6 +44,7 @@ export default function CreateBranch() {
 
   React.useEffect(() => {
     async function getComapny() {
+      SetLoader(true);
       const response = await fetch(url + "fetchCompaniesRoleBranch/", {
         headers: {
           Authorization: user.token,
@@ -60,15 +63,18 @@ export default function CreateBranch() {
               };
             })
           );
+          SetLoader(false);
         } else if (data.status == 404) {
           return (window.location = window.location.origin + "/#/404");
         } else {
           toast.error(data.message);
+          SetLoader(false);
         }
       }
     }
 
     async function FetchBranchData() {
+      SetLoader(true);
       const response = await fetch(url + "edit/branch/" + id, {
         headers: {
           Authorization: user.token,
@@ -109,12 +115,14 @@ export default function CreateBranch() {
             value: BranchData.company_id,
             label: BranchData.company_name,
           });
+          SetLoader(false);
         } else if (data.status == 401) {
           toast.error(
             "Unable to fetch the data please reload the page or try again later"
           );
         } else {
           toast.error(data.error);
+          SetLoader(false);
         }
       }
     }
@@ -126,6 +134,7 @@ export default function CreateBranch() {
     e.preventDefault();
     if (countryId && stateId && cityId) {
       if (validator.isMobilePhone(mobileno)) {
+        SetLoader(true);
         async function submitBranch() {
           const formdata = new FormData();
           formdata.append("branch_id", id);
@@ -158,6 +167,7 @@ export default function CreateBranch() {
             } else {
               setEmail(data?.condition);
               toast.error(data.message);
+              SetLoader(false);
             }
           }
         }
@@ -172,6 +182,7 @@ export default function CreateBranch() {
 
   return (
     <section>
+      {loader && <Loader/>}
       <ToastContainer />
       <div className="container">
         <form onSubmit={(e) => handleSubmit(e)}>

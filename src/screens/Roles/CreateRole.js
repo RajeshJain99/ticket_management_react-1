@@ -6,6 +6,8 @@ import { useHistory } from 'react-router-dom'
 import validator from 'validator'
 import { toast, ToastContainer } from 'react-toastify';
 import { icons } from 'src/assets/icons';
+import loader from 'src/components/Loader'
+import Loader from 'src/components/Loader';
 
 
 export default function CreateRole() {
@@ -15,6 +17,7 @@ export default function CreateRole() {
     const [RoleDescription, setRoleDescription] = React.useState('');
     const [RoleIcon, setRoleIcon] = React.useState('');
     const [roleImage, setRoleImage] = React.useState('');
+    const [loading,setLoading] = React.useState(false);
 
     const onImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -28,6 +31,7 @@ export default function CreateRole() {
         e.preventDefault();
         if (roleImage) {
             async function sumbitRole() {
+                setLoading(true);
                 const formData = new FormData();
                 formData.append('name', RoleName)
                 formData.append('description', RoleDescription)
@@ -50,6 +54,7 @@ export default function CreateRole() {
                      return  window.location= window.location.origin +'/#/404';
                     } else{
                       toast.error(data.message);
+                      setLoading(false);
                     }
                 }
             }
@@ -62,6 +67,7 @@ export default function CreateRole() {
     }
     return (
         <section>
+            {loading && <Loader/>}
             <ToastContainer />
             <div className="container">
                 <form onSubmit={e => handleSubmit(e)}>

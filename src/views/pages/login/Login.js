@@ -99,6 +99,11 @@ const Login = () => {
                         </CInputGroupText>
                       </CInputGroupPrepend>
                       <CInput type="password" placeholder="Password" autoComplete="current-password" required value={password} onChange={e => setPassword(e.target.value)} />
+                      <CInputGroupPrepend>
+                        <CInputGroupText>
+                          <CIcon name="cil-eye" />
+                        </CInputGroupText>
+                      </CInputGroupPrepend>
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">

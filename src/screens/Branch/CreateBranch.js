@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { url } from 'src/helpers/Helpers';
 import validator from 'validator'
 import Select from 'react-select'
-
+import Loader from 'src/components/Loader'
 
 
 export default function CreateBranch() {
@@ -23,6 +23,7 @@ export default function CreateBranch() {
     const [companyid, setCompanyId] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [mobileno, setMobileno] = React.useState('');
+    const [loading, showLoading] = React.useState(false);
     const { user } = React.useContext(userContext);
     const history = useHistory();
 
@@ -44,6 +45,7 @@ export default function CreateBranch() {
     React.useEffect(() => {
 
         async function getCompanyDropDown() {
+            showLoading(true);
             const response = await fetch(url + 'fetchCompaniesRoleBranch/', {
                 headers: {
                     'Authorization': user.token
@@ -54,19 +56,20 @@ export default function CreateBranch() {
                 const data = await response.json()
                 if (data.status == 200) {
                     let company = data.companies_data;
-                    // setCompany(company);
                     setCompany(company.map(item => {
                         return {
                             value: item.id,
                             label: item.name
                         }
                     }))
+                    showLoading(false)
                 }
                 else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404'
                 }
                 else {
                     toast.error(data.message)
+                    showLoading(false)
                 }
             }
         }
@@ -78,6 +81,7 @@ export default function CreateBranch() {
         if (countryId && stateId && cityId) {
             if (validator.isMobilePhone(mobileno)) {
                 async function submitBranch() {
+                    showLoading(true)
                     const formdata = new FormData();
                     formdata.append('name', branchName)
                     formdata.append('address', address)
@@ -109,6 +113,7 @@ export default function CreateBranch() {
                             return window.location = window.location.origin + '/#/404';
                         } else {
                             toast.error(data.message);
+                            showLoading(false)
                         }
 
                     }
@@ -127,6 +132,7 @@ export default function CreateBranch() {
 
     return (
         <section>
+             {loading && <Loader />}
             <ToastContainer />
             <div className="container">
                 <form onSubmit={e => handleSubmit(e)}>
