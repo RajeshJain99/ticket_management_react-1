@@ -157,7 +157,7 @@ export default function EditCompany() {
                         <div className="col-md-4">
                             <div className="form-group">
                                 <label htmlFor="">Email</label>
-                                <input required value={email} onChange={e => setEmail(e.target.value)} type="email" className="form-control" />
+                                <input required readOnly value={email} onChange={e => setEmail(e.target.value)} type="email" className="form-control" />
                             </div>
                         </div>
                     </div>
