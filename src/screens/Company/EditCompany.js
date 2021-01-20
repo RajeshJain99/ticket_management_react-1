@@ -7,6 +7,7 @@ import { fetchContext } from '../../context/FetchContext'
 import { useHistory } from 'react-router-dom'
 import validator from 'validator'
 import Select from 'react-select'
+import Loader from 'src/components/Loader';
 
 export default function EditCompany() {
     const history = useHistory();
@@ -22,6 +23,7 @@ export default function EditCompany() {
     const [matchStates, setMatchStates] = React.useState([])
     const [matchCities, setMatchCities] = React.useState([])
     const [address, setAddress] = React.useState('')
+    const [loading, showLoading] = React.useState(false);
 
 
     const { allCountries, allStates, allCities, getStates, getCities } = React.useContext(fetchContext)
@@ -44,6 +46,7 @@ export default function EditCompany() {
         e.preventDefault();
         if (stateId && cityId && countryId) {
             if (validator.isMobilePhone(mobile)) {
+                showLoading(true)
                 async function submitCompany() {
                     const formData = new FormData();
                     formData.append('name', companyName)
@@ -71,6 +74,7 @@ export default function EditCompany() {
                         else if (data.status == 404) {
                             return window.location = window.location.origin + '/#/404';
                         } else {
+                            showLoading(false)
                             toast.error(data.message);
                         }
                     }
@@ -86,6 +90,7 @@ export default function EditCompany() {
     }
 
     React.useEffect(() => {
+        showLoading(true);
         async function fetchCompanyData() {
             const response = await fetch(url + 'edit/company/' + id, {
                 headers: {
@@ -97,6 +102,7 @@ export default function EditCompany() {
                 const data = await response.json()
 
                 if (data.status == 201) {
+                    showLoading(false)
                     let companyData = data.company_data;
                     setCompanyData(companyData);
                     setCompanyName(companyData.name);
@@ -126,6 +132,7 @@ export default function EditCompany() {
                     })
 
                 } else if (data.status == 401) {
+                    showLoading(false)
                     toast.error('Unable to fetch the data please reload the page or try again later')
                 }
                 else if (data.status == 404) {
@@ -138,6 +145,7 @@ export default function EditCompany() {
     }, [id])
     return (
         <section>
+            {loading && <Loader />}
             <ToastContainer />
             <div className="container">
                 <form onSubmit={e => handleSubmit(e)}>
