@@ -1,0 +1,12 @@
+.gif {
+  position: fixed !important;
+  top: 0% !important;
+  left: 0% !important;
+  z-index: 99999;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.75);
+}

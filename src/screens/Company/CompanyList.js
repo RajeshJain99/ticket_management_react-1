@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import { Link } from 'react-router-dom';
 import CustomModal from '../../components/CustomModal'
 import { userContext } from 'src/context/UserContext';
+import Loader from 'src/components/Loader';
 
 export default function CompanyList() {
     const { user } = React.useContext(userContext);
@@ -12,26 +13,29 @@ export default function CompanyList() {
     const [allCompanies, setAllCompanies] = React.useState([]);
     const [modal, setModal] = React.useState(false)
     const [deleteId, setDeleteId] = React.useState('')
-   
-     console.log(user);
+    const [loading, showLoading] = React.useState(false);
+
     React.useEffect(() => {
+        showLoading(true)
         async function getCompanies() {
             const response = await fetch(url + 'getCompanies/'
-            ,{
-                headers : {
-                    'Authorization' : user.token
-                }
-            })
+                , {
+                    headers: {
+                        'Authorization': user.token
+                    }
+                })
             if (response.ok === true) {
                 const data = await response.json();
 
                 if (data.status == 200) {
+                    showLoading(false)
                     setAllCompanies(data.companies)
-                 }
-                else if(data.status == 404){
-                     return window.location = window.location.origin + '/#/404';
+                }
+                else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404';
                 }
                 else {
+                    showLoading(false)
                     toast.error(data.message);
                 }
             }
@@ -46,6 +50,7 @@ export default function CompanyList() {
 
 
     const deleteEntry = () => {
+        showLoading(true);
         async function deleteCompany() {
             const response = await fetch(url + 'delete/company/' + deleteId, {
                 headers: {
@@ -57,12 +62,13 @@ export default function CompanyList() {
                 const data = await response.json()
 
                 if (data.status == 200) {
+                    showLoading(false)
                     setAllCompanies(data.companies)
                     setModal(false);
                     toast.success('Information deleted successfully')
                 }
-                else if(data.status==404){
-                    return window.location = window.location.origin +'/#/404';
+                else if (data.status == 404) {
+                    return window.location = window.location.origin + '/#/404';
                 }
             }
         }
@@ -79,6 +85,7 @@ export default function CompanyList() {
 
     return (
         <div>
+            {loading && <Loader />}
             <ToastContainer />
             <div className='add-btn-div'>
                 <Link to='/create/company/' className='btn btn-primary'><i class="fa fa-plus mx-1" aria-hidden="true"></i> Add new company</Link>

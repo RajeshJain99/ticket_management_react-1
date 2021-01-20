@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 import validator from 'validator'
 import { toast, ToastContainer } from 'react-toastify';
 import Select from 'react-select';
+import Loader from 'src/components/Loader';
 
 
 export default function CreateCompany() {
@@ -21,6 +22,7 @@ export default function CreateCompany() {
     const [matchStates, setMatchStates] = React.useState([])
     const [matchCities, setMatchCities] = React.useState([])
     const [address, setAddress] = React.useState('')
+    const [loading, showLoading] = React.useState(false);
 
 
     const { allCountries, getStates, getCities } = React.useContext(fetchContext)
@@ -42,6 +44,7 @@ export default function CreateCompany() {
         e.preventDefault();
         if (countryId && cityId && stateId) {
             if (validator.isMobilePhone(mobile)) {
+                showLoading(true)
                 async function submitCompany() {
                     const formData = new FormData();
                     formData.append('name', companyName)
@@ -69,6 +72,7 @@ export default function CreateCompany() {
                             return window.location = window.location.origin + '/#/404';
                         }
                         else {
+                            showLoading(false)
                             toast.error(data.message);
                         }
                     }
@@ -90,6 +94,7 @@ export default function CreateCompany() {
 
     return (
         <section>
+            {loading && <Loader />}
             <ToastContainer />
             <div className="container">
                 <form onSubmit={e => handleSubmit(e)}>
