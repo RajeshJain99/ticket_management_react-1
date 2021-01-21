@@ -2,6 +2,7 @@ import React from 'react'
 import { url } from 'src/helpers/Helpers';
 import { toast, ToastContainer } from 'react-toastify';
 import { userContext } from './../context/UserContext'
+import Loader from 'src/components/Loader'
 
 
 export default function Smtp() {
@@ -12,9 +13,11 @@ export default function Smtp() {
     const [username, setUserName] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [providerid, setProviderId] = React.useState('');
+    const [loading,setLoading] = React.useState(false);
     React.useEffect(() => {
 
         async function FetchProviderData() {
+            setLoading(false);
             const response = await fetch(url + 'fetchMailProviders/', {
                 headers: {
                     'Authorization': user.token
@@ -27,8 +30,10 @@ export default function Smtp() {
                 if (data.status == 200) {
                     let ProviderData = data.provider_list;
                       setProviderName(ProviderData);
+                     setLoading(false);
                 } else {
-                    toast.error('Unable to fetch the data please reload the page or try again later')
+                    toast.error(data.message)
+                    setLoading(false);
                 }
             }
         }
@@ -40,6 +45,7 @@ export default function Smtp() {
 
     return (
         <div>
+            {loading && <Loader/>}
             <h3 id="MailId" >Mail SMPT Configuration</h3>
             <br />
             <div className="container">

@@ -3,6 +3,7 @@ import { userContext } from 'src/context/UserContext'
 import validator from 'validator';
 import { toast, ToastContainer } from 'react-toastify';
 import { url } from 'src/helpers/Helpers';
+import Loader from 'src/components/Loader'
 
 
 
@@ -14,6 +15,7 @@ export default function Profile() {
     const [ConfirmPassword, setConfirmPassword] = React.useState('');
     const [ShowError, SetShowError] = React.useState(false);
     const { user } = useContext(userContext);
+    const [loading, setLoading] = React.useState(false);
 
     useEffect(() => {
         let lname = user.userData.lname != null ? user.userData.lname : ''
@@ -29,7 +31,7 @@ export default function Profile() {
             if (Password == ConfirmPassword) {
                 if (validator.isMobilePhone(MobileNo)) {
                     async function SaveProfileData() {
-
+                         setLoading(true);
                         const formData = new FormData();
                         formData.append('name', Name)
                         formData.append('mobile', MobileNo)
@@ -53,6 +55,7 @@ export default function Profile() {
                                 }, 3000)
                             } else if (data.status == 500) {
                                 toast.error(data.message)
+                                setLoading(false);
                             }
                             else if (data.status == 404) {
                                 return window.location = window.location.origin + '/#/404';
@@ -75,6 +78,7 @@ export default function Profile() {
 
     return (
         <div>
+            {loading && <Loader/>}
             <ToastContainer />
             <form onSubmit={e => handleSubmit(e)}>
                 <div className="row">

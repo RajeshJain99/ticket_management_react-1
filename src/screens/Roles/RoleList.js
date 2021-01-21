@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { userContext } from 'src/context/UserContext';
 import CustomModal from '../../components/CustomModal'
 import loader from 'src/components/Loader'
+import Loader from 'react-spinners/BarLoader';
 
 export default function RoleList() {
     const { user } = React.useContext(userContext);
@@ -17,6 +18,7 @@ export default function RoleList() {
 
     React.useEffect(() => {
         async function getRoles() {
+            setLoading(true);
             const response = await fetch(url + 'roles/', {
                 headers: {
                     'Authorization': user.token
@@ -27,11 +29,13 @@ export default function RoleList() {
 
                 if (data.status == 200) {
                     setAllRoles(data.role_list)
+                    setLoading(false);
                 } else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404'
                 }
                 else {
                     toast.error(data.message);
+                    setLoading(false);
                 }
             }
         }
@@ -45,6 +49,8 @@ export default function RoleList() {
 
     const deleteEntry = () => {
         async function DeleteRole() {
+
+            setLoading(true);
             const response = await fetch(url + 'delete/role/' + deleteId, {
                 headers: {
                     'Authorization': user.token
@@ -57,9 +63,13 @@ export default function RoleList() {
                 if (data.status == 200) {
                     setAllRoles(data.role_list)
                     setModal(false);
+                    setLoading(false)
                     toast.success('Information deleted successfully')
                 } else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404';
+                } else {
+                    toast.error(data.message);
+                    setLoading(false);
                 }
 
             }
@@ -68,6 +78,7 @@ export default function RoleList() {
     }
     return (
         <div>
+            {loading && <Loader/>}
             <ToastContainer />
             <div className='add-btn-div'>
                 <Link to='/create/role/' className='btn btn-primary'><i class="fa fa-plus mx-1" aria-hidden="true"></i> Add new Role</Link>
