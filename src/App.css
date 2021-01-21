@@ -73,4 +73,83 @@
 .checkbox_div .input-div input {
   margin-right: 10px;
 }
+
+.head_menus .image_box {
+  border-radius: 7px;
+  background-color: white;
+  margin-right: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.head_menus .image_box img {
+  width: 43px;
+  height: auto;
+}
+
+.user_welcome {
+  background-color: #344a69;
+  text-align: center;
+  padding: 40px;
+  margin-top: 1rem;
+}
+
+.user_welcome h1 {
+  color: #fff;
+}
+
+.all_ticket_cards .ticket_card {
+  text-align: center;
+  text-transform: capitalize;
+  background-color: #515be0;
+  color: white;
+  margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+  .col-md-3 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 32%;
+            flex: 0 0 32%;
+    max-width: 32%;
+  }
+}
+
+.ticket_review_cards .last_open_ticket_card {
+  background-color: white;
+  margin-top: 2rem;
+  padding: 1rem;
+  color: #5a6868;
+}
+
+.ticket_review_cards .last_open_ticket_card .fa-folder-open {
+  color: #ff641a;
+}
+
+.ticket_review_cards .last_open_ticket_card .view_all_btn a {
+  border: 1px solid #515be0;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.ticket_review_cards .last_open_ticket_card .opened_btn a {
+  background-color: #515be0;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 51px;
+  line-height: 1;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.ticket_review_cards .last_open_ticket_card_ticket_id {
+  font-size: 13px;
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.ticket_review_cards .last_open_ticket_card_ticket_id p {
+  margin: 0;
+  padding-left: 1rem;
+}
 /*# sourceMappingURL=App.css.map */

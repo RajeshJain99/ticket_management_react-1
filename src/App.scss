@@ -68,3 +68,121 @@
     }
   }
 }
+
+// yahya 21-01-2021
+
+// header menus section css
+.head_menus {
+  .image_box{
+    border-radius: 7px;
+    background-color: white;
+    margin-right: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+
+    img{
+    width: 43px ;
+    height: auto ;
+
+    }
+  }
+}
+
+// welcome User name css
+.user_welcome{
+  background-color: #344a69;
+  text-align: center;
+  padding: 40px;
+  margin-top: 1rem;
+
+  h1{
+    color: #fff;
+  }
+}
+
+// ticket cards css
+.all_ticket_cards{
+  
+  .ticket_card{
+    text-align: center;
+    text-transform: capitalize;
+    background-color: #515be0;
+    color: white;
+    margin-top: 2rem;
+  }
+}
+@media (min-width: 768px){
+  .col-md-3 {
+      flex: 0 0 32%;
+      max-width: 32%;
+  }
+}
+
+// tickets review cards css
+.ticket_review_cards{
+
+  .last_open_ticket_card{
+    background-color: white;
+    margin-top: 2rem;
+    padding: 1rem;
+    color: #5a6868;
+
+    .fa-folder-open{
+      color: #ff641a;
+    }
+
+    .view_all_btn a{
+      border: 1px solid #515be0;
+      padding : 5px;
+      border-radius: 3px;
+    }
+
+    .opened_btn a{
+      background-color: #515be0;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 51px;
+      line-height: 1;
+      height: fit-content;
+  
+    }
+  }
+
+  .last_open_ticket_card_ticket_id{
+    font-size: 13px;
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+
+    p{
+      margin: 0;
+      padding-left: 1rem;
+    }
+    
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
