@@ -1,7 +1,5 @@
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react'
 import React from 'react'
-import { url } from 'src/helpers/Helpers';
-
 
 export default function CustomModal(props) {
     const { modal, setModal, deleteEntry } = props;
