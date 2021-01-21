@@ -6,6 +6,7 @@ import { userContext } from '../../context/UserContext'
 import { useHistory } from 'react-router-dom'
 import validator from 'validator'
 import { cilObjectGroup } from '@coreui/icons';
+import Loader from 'src/components/Loader'
 
 export default function EditRole() {
     const history = useHistory();
@@ -15,6 +16,7 @@ export default function EditRole() {
     const [roleDescription, setRoleDescription] = React.useState('');
     const [roleIcon, setRoleIcon] = React.useState('');  // ---> display
     const [roleImage, setRoleImage] = React.useState(null); // ---> roleImage
+    const [loading,setLoding]= React.useState(false);
 
 
     const onImageChange = (event) => {
@@ -26,6 +28,7 @@ export default function EditRole() {
     const handleSubmit = e => {
         e.preventDefault();
         async function submitRole() {
+            setLoding(true);
             const formData = new FormData();
             console.log(roleImage);
             console.log(roleIcon);
@@ -61,6 +64,7 @@ export default function EditRole() {
                 }
                 else {
                     toast.error(data.message);
+                    setLoding(false);
                 }
 
             }
@@ -70,6 +74,7 @@ export default function EditRole() {
 
     React.useEffect(() => {
         async function fetchRoleData() {
+            setLoding(true);
             const response = await fetch(url + 'role/detail/' + id, {
 
                 headers: {
@@ -87,12 +92,14 @@ export default function EditRole() {
                     setRoleDescription(roleData?.description);
                     setRoleImage(roleData?.icon)
                     setRoleIcon(`${url}${roleData?.icon}`) //---> only preview
+                    setLoding(false);
                 }
                 else if(data.status==404){
                 return window.location= window.location.origin + '/#/404';
                 }
                 else {
                     toast.error(data.message)
+                    setLoding(false);
                 }
             }
         }
@@ -101,6 +108,7 @@ export default function EditRole() {
 
     return (
         <section>
+            {loading && <Loader/>}
             <ToastContainer />
             <div className="container">
                 <form onSubmit={e => handleSubmit(e)}>

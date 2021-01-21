@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify';
 import Select from 'react-select'
 import validator from 'validator'
+import Loader from 'src/components/Loader'
 
 export default function CreateUser() {
     const history = useHistory();
@@ -21,6 +22,7 @@ export default function CreateUser() {
     const [roleid, setRoleId] = React.useState('');
     const [companyid, setCompanyId] = React.useState('');
     const [branchid, setBranchId] = React.useState('');
+    const [loading,setLoading]= React.useState(false);
 
     const adjustValue = value => {
         setCompanyId(value)
@@ -28,7 +30,7 @@ export default function CreateUser() {
     }
 
     React.useEffect(() => {
-
+        setLoading(true);
         async function FetchDropDownData() {
             const response = await fetch(url + 'fetchCompaniesRoleBranch/', {
                 headers: {
@@ -42,7 +44,6 @@ export default function CreateUser() {
                     let role = data.role_data;
                     let company = data.companies_data;
                     let branch = data.branch_data;
-                    console.log(data);
                     setCompany(company.map(item => {
                         return {
                             value: item.id,
@@ -62,12 +63,13 @@ export default function CreateUser() {
                             company_id: item.company_id
                         }
                     }))
-
+                    setLoading(false);
                 } else if (data.status == 404) {
                     window.location = window.location.origin + '/#/404';
                 }
                 else {
-                    toast.error('Unable to fetch the data please reload the page or try again later')
+                  toast.error(data.message)
+                  setLoading(false);
                 }
             }
         }
@@ -78,6 +80,7 @@ export default function CreateUser() {
         e.preventDefault();
         if (companyid && roleid && branchid) {
             if (validator.isMobilePhone(mobileno)) {
+                setLoading(true);
                 async function sumbitUser() {
                     const formData = new FormData();
                     formData.append('fname', firstName)
@@ -106,6 +109,7 @@ export default function CreateUser() {
                         }
                         else {
                             toast.error(data.message)
+                            setLoading(false);
                         }
                     }
                 }
@@ -122,8 +126,8 @@ export default function CreateUser() {
 
 
     return (
-
-        <section>
+         <section>
+            {loading && <Loader/>}
             <ToastContainer />
             <div className="container">
                 <form onSubmit={e => handleSubmit(e)}>

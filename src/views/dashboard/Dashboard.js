@@ -8,15 +8,17 @@ import dashboard from '../../images/dashboard.svg';
 import newImg from '../../images/new.svg';
 import tickets from '../../images/tickets.svg';
 import userImg from '../../images/user.svg';
+import Loader from 'src/components/Loader'
 
 
 const Dashboard = () => {
 
   const { user } = React.useContext(userContext);
   const [openTickes, SetOpenTickes] = React.useState([]);
-
+  const[loading,setLoading] = React.useState(false)
 
   React.useEffect(() => {
+    setLoading(true);
     async function GetTicketList() {
       const response = await fetch(url + 'fetchLatestTicket/', {
         headers: {
@@ -27,11 +29,12 @@ const Dashboard = () => {
         const data = await response.json()
         if (data.status == 200) {
           SetOpenTickes(data.latest_ticket_open)
-          console.log(data);
+          setLoading(false);
         } else if (data.status == 404) {
           return window.location = window.location.origin + '/#/404'
         } else {
           toast.error(data.message)
+          setLoading(false);
         }
       }
 
@@ -41,6 +44,7 @@ const Dashboard = () => {
 
   return (
     <>
+    {loading && <Loader/>}
       <ToastContainer />
       <section>
 

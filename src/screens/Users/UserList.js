@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import { Link } from 'react-router-dom';
 import { userContext } from 'src/context/UserContext';
 import CustomModal from '../../components/CustomModal'
+import Loader from 'src/components/Loader'
 
 export default function UserList() {
     const { user } = React.useContext(userContext);
@@ -12,9 +13,11 @@ export default function UserList() {
     const [allUsers, setallUsers] = React.useState([]);
     const [modal, setModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState('')
+    const [loading,setLoading] = React.useState(false);
 
     React.useEffect(() => {
         async function getUsers() {
+            setLoading(true);
             const response = await fetch(url + 'userList/', {
                 headers: {
                     'Authorization': user.token
@@ -25,10 +28,12 @@ export default function UserList() {
 
                 if (data.status == 200) {
                     setallUsers(data.userData)
+                    setLoading(false);
                 } else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404';
                 } else {
                     toast.error(data.message);
+                    setLoading(false);
                 }
             }
         }
@@ -49,7 +54,7 @@ export default function UserList() {
     }
 
     const deleteEntry = () => {
-
+        setLoading(true);
         async function DeleteUsers() {
             const response = await fetch(url + 'deleteUser/' + deleteId, {
                 headers: {
@@ -62,7 +67,6 @@ export default function UserList() {
 
                 if (data.status == 200) {
                     setModal(false);
-                    // return  window.location.reload()
                     async function getUsers() {
                         const response = await fetch(url + 'userList/', {
                             headers: {
@@ -74,10 +78,12 @@ export default function UserList() {
 
                             if (data.status == 200) {
                                 setallUsers(data.userData)
+                                setLoading(false);
                             } else if (data.status == 404) {
                                 return window.location = window.location.origin + '/#/404';
                             } else {
                                 toast.error(data.message);
+                                setLoading(false);
                             }
                         }
                     }
@@ -86,6 +92,7 @@ export default function UserList() {
                     return window.location = window.location.origin + '/#/404'
                 } else {
                     toast.error(data.message);
+                    setLoading(false);
                 }
             }
         }
@@ -93,6 +100,7 @@ export default function UserList() {
     }
     return (
         <div>
+            {loading && <Loader/>}
             <ToastContainer />
             <div className='add-btn-div'>
                 <Link to='/create/user/' className='btn btn-primary'><i class="fa fa-plus mx-1" aria-hidden="true"></i>Add New User</Link>

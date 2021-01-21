@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import { data } from 'jquery';
 import Select from 'react-select'
 import validator from 'validator'
+import Loader from 'src/components/Loader'
 
 export default function CreateUser() {
     const { id } = useParams();
@@ -25,6 +26,7 @@ export default function CreateUser() {
     const [branchid, setBranchId] = React.useState('');
     const [filterBranch, setFilterBranch] = React.useState([]);
     const [originalEmail, setOriginalEmail] = React.useState('');
+    const [loading,setLoading]= React.useState(false);
     let branch_data = []
 
     const adjustValue = value => {
@@ -40,7 +42,7 @@ export default function CreateUser() {
 
 
     React.useEffect(() => {
-
+        setLoading(true);
         async function FetchDropDownData() {
             const response = await fetch(url + 'fetchCompaniesRoleBranch/', {
                 headers: {
@@ -76,16 +78,19 @@ export default function CreateUser() {
                         }
                     })
                     setBranch(branch_data)
+                    setLoading(false);
                 } else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404'
                 } else {
                     toast.error(data.message)
+                    setLoading(false);
                 }
             }
         }
         FetchDropDownData();
 
         async function FetchUserData() {
+            setLoading(true);
             const response = await fetch(url + 'edit/user/' + id, {
                 headers: {
                     'Authorization': user.token
@@ -132,11 +137,13 @@ export default function CreateUser() {
                         })
                     }
                     setBranchId(dict_list)
+                    setLoading(false);
                 } else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404';
                 }
                 else {
                     toast.error(data.message)
+                    setLoading(false);
                 }
             }
         }
@@ -148,6 +155,7 @@ export default function CreateUser() {
         e.preventDefault();
         if (companyid && roleid && branchid) {
             if (validator.isMobilePhone(mobileno)) {
+                setLoading(true);
                 async function sumbitUser() {
                     const formData = new FormData();
                     formData.append('fname', firstName)
@@ -175,6 +183,7 @@ export default function CreateUser() {
                         } else {
                             setEmail(originalEmail);
                             toast.error(data.message)
+                            setLoading(false);
                         }
                     }
                 }
@@ -192,6 +201,7 @@ export default function CreateUser() {
 
     return (
         <section>
+            {loading &&<Loader/>}
             <ToastContainer />
             <div className="container">
                 <form onSubmit={e => handleSubmit(e)}>
