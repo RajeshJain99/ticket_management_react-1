@@ -4,12 +4,14 @@ import { url } from 'src/helpers/Helpers';
 import { userContext } from '../context/UserContext'
 import { toast, ToastContainer } from 'react-toastify'
 import $ from 'jquery'
+import Loader from 'src/components/Loader'
 
 export default function Permission() {
     const { user } = React.useContext(userContext);
     const [parentPermission, setParentPermission] = React.useState([]);
     const [finalPermission, setFinalPermission] = React.useState([]);
     const [permissioBasedRole, setPermissioBasedRole] = React.useState([])
+    const [loading,SetLoading] = React.useState(false);
 
     const { id } = useParams();
 
@@ -35,6 +37,7 @@ export default function Permission() {
         }
 
         async function sendPermission() {
+            SetLoading(true);
             const formData = new FormData();
             formData.append('permission_id', JSON.stringify(final_list));
             formData.append('role_id', id);
@@ -51,10 +54,12 @@ export default function Permission() {
                 const data = await response.json()
                 if (data.status == 200) {
                     toast.success(data.message);
+                    SetLoading(false);
                 } else if (data.status == 404) {
                     return window.location = window.location.origin + '/#/404'
                 } else {
                     toast.error(data.message);
+                    SetLoading(false);
                 }
             }
         }
@@ -63,6 +68,7 @@ export default function Permission() {
     }
 
     React.useEffect(() => {
+        SetLoading(true);
         async function fetchPermission() {
             const response = await fetch(url + 'RolePermissionPage/' + id, {
                 headers: {
@@ -72,9 +78,9 @@ export default function Permission() {
 
             if (response.ok === true) {
                 const data = await response.json()
-                console.log(data);
-                setParentPermission(data.parent_permission_list);
-                setPermissioBasedRole(data?.permissioBasedRole)
+                 setParentPermission(data.parent_permission_list);
+                 setPermissioBasedRole(data?.permissioBasedRole)
+                 SetLoading(false);
             }
         }
 
