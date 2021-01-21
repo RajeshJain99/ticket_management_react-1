@@ -34,6 +34,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.8.1",
     "enzyme": "^3.11.0",
+    "javascript-time-ago": "^2.3.4",
     "jquery": "^3.5.1",
     "jsonwebtoken": "^8.5.1",
     "node-sass": "^4.14.1",
@@ -48,8 +49,10 @@
     "react-select": "^3.2.0",
     "react-select-2": "^2.0.11",
     "react-spinners": "^0.10.4",
+    "react-time-ago": "^6.2.2",
     "react-toastify": "^6.2.0",
     "redux": "4.0.5",
+    "timeago-react": "^3.0.1",
     "validator": "^13.5.2"
   },
   "devDependencies": {

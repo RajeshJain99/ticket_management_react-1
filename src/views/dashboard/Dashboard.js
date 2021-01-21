@@ -1,34 +1,16 @@
-import React, { lazy } from 'react'
-import {
-  CBadge,
-  CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
-  CCallout
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+import React from 'react'
 import { userContext } from '../../context/UserContext'
 import { toast, ToastContainer } from 'react-toastify'
-import MainChartExample from '../charts/MainChartExample.js'
-import Toaster from '../notifications/toaster/Toaster'
 import { url } from 'src/helpers/Helpers'
 import { Link } from 'react-router-dom'
 import Loader from 'src/components/Loader'
-
-const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
-const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
+import TimeAgo from 'timeago-react'
 
 const Dashboard = () => {
 
   const { user } = React.useContext(userContext);
   const [openTickes, SetOpenTickes] = React.useState([]);
-  const[loading,setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
     setLoading(true);
@@ -57,7 +39,7 @@ const Dashboard = () => {
 
   return (
     <>
-    {loading && <Loader/>}
+      {loading && <Loader />}
       <ToastContainer />
       <section>
         <div>
@@ -66,10 +48,10 @@ const Dashboard = () => {
             {openTickes?.map(item => {
               return (
                 <li>
-                  <Link  to={`/ticket/${item.id}/`} >
+                  <Link to={`/ticket/${item.id}/`} >
                     <div>
                       <p>{item.subject}</p>
-                      <p>Ticket-id : {item.id} <span>time :- {item.created_at}</span></p>
+                      <p>Ticket-id : {item.id} <span>time :- <TimeAgo datetime={new Date(Date.parse(item.created_at))} /></span></p>
                       <p>Open</p>
                     </div>
                   </Link>

@@ -177,7 +177,6 @@ export default function CreateTicket() {
                     <div className='row'>
                         <div className='form-group'>
                             <label htmlFor=''>Attach file(optional)</label>
-                            {/* <input type='file' value={image} onChange={(e) => onImageChange(e)} className='form-control' /> */}
                             <MultiImageInput
                                 images={images}
                                 setImages={setImages}

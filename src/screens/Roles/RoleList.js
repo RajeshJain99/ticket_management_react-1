@@ -5,8 +5,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import { Link } from 'react-router-dom';
 import { userContext } from 'src/context/UserContext';
 import CustomModal from '../../components/CustomModal'
-import loader from 'src/components/Loader'
-import Loader from 'react-spinners/BarLoader';
+import Loader from 'src/components/Loader'
 
 export default function RoleList() {
     const { user } = React.useContext(userContext);
@@ -14,7 +13,7 @@ export default function RoleList() {
     const [allRoles, setAllRoles] = React.useState([]);
     const [modal, setModal] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState('')
-    const [loading,setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
         async function getRoles() {
@@ -78,7 +77,7 @@ export default function RoleList() {
     }
     return (
         <div>
-            {loading && <Loader/>}
+            {loading && <Loader />}
             <ToastContainer />
             <div className='add-btn-div'>
                 <Link to='/create/role/' className='btn btn-primary'><i class="fa fa-plus mx-1" aria-hidden="true"></i> Add new Role</Link>
