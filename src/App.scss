@@ -73,35 +73,60 @@
 
 // header menus section css
 .head_menus {
+<<<<<<< HEAD
   .image_box {
+=======
+  .image_box{
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a
     border-radius: 7px;
     background-color: white;
     margin-right: 10px;
     padding: 5px 10px;
     cursor: pointer;
 
+<<<<<<< HEAD
     img {
       width: 43px;
       height: auto;
+=======
+    img{
+    width: 43px ;
+    height: auto ;
+
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a
     }
   }
 }
 
 // welcome User name css
+<<<<<<< HEAD
 .user_welcome {
+=======
+.user_welcome{
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a
   background-color: #344a69;
   text-align: center;
   padding: 40px;
   margin-top: 1rem;
 
+<<<<<<< HEAD
   h1 {
+=======
+  h1{
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a
     color: #fff;
   }
 }
 
 // ticket cards css
+<<<<<<< HEAD
 .all_ticket_cards {
   .ticket_card {
+=======
+.all_ticket_cards{
+  
+  .ticket_card{
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a
     text-align: center;
     text-transform: capitalize;
     background-color: #515be0;
@@ -109,21 +134,35 @@
     margin-top: 2rem;
   }
 }
+<<<<<<< HEAD
 @media (min-width: 768px) {
   .col-md-3 {
     flex: 0 0 32%;
     max-width: 32%;
+=======
+@media (min-width: 768px){
+  .col-md-3 {
+      flex: 0 0 32%;
+      max-width: 32%;
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a
   }
 }
 
 // tickets review cards css
+<<<<<<< HEAD
 .ticket_review_cards {
   .last_open_ticket_card {
+=======
+.ticket_review_cards{
+
+  .last_open_ticket_card{
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a
     background-color: white;
     margin-top: 2rem;
     padding: 1rem;
     color: #5a6868;
 
+<<<<<<< HEAD
     .fa-folder-open {
       color: #ff641a;
     }
@@ -135,12 +174,26 @@
     }
 
     .opened_btn a {
+=======
+    .fa-folder-open{
+      color: #ff641a;
+    }
+
+    .view_all_btn a{
+      border: 1px solid #515be0;
+      padding : 5px;
+      border-radius: 3px;
+    }
+
+    .opened_btn a{
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a
       background-color: #515be0;
       color: white;
       padding: 4px 10px;
       border-radius: 51px;
       line-height: 1;
       height: fit-content;
+<<<<<<< HEAD
     }
   }
 
@@ -154,3 +207,48 @@
     }
   }
 }
+=======
+  
+    }
+  }
+
+  .last_open_ticket_card_ticket_id{
+    font-size: 13px;
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+
+    p{
+      margin: 0;
+      padding-left: 1rem;
+      color: 'white'
+    }
+    
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a

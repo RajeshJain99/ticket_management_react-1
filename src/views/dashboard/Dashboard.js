@@ -103,7 +103,11 @@ const Dashboard = () => {
                 <div className='row '>
                   <p className='col-sm-8'>add test</p>
                   <div className='col-sm-4 d-flex justify-content-sm-end opened_btn'>
+<<<<<<< HEAD
                     <a href="">Opened</a>
+=======
+                  <a href="">Opened</a>
+>>>>>>> 0ecec80fda63dbbadc79cfb3d6ff66e7adb38d3a
                   </div>
                 </div>
                 <div className='row last_open_ticket_card_ticket_id'>
